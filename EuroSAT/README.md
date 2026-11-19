@@ -1,6 +1,6 @@
 # EuroSAT - Phân loại ảnh vệ tinh khi ít nhãn
 
-Bài luyện tập IMGCLS trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/).
+Bài luyện tập IMGCLS trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/). Đề bài đầy đủ: [DE_BAI.md](DE_BAI.md).
 
 ## Bài toán
 
@@ -10,6 +10,8 @@ Bài luyện tập IMGCLS trên [hệ thống ôn luyện PHENIKAA AI Hackathon]
 - Điểm: macro-F1 (phụ: accuracy).
 
 **LB public tốt nhất: 0.8074.** Điểm này khớp với bản fine-tune ResNet-50 pretrained ở mục "Phiên bản trước" (val hard 0.793); hai bản không pretrained trong repo không có ghi chép LB riêng.
+
+Không xác định được lượt nộp nào đạt điểm này, nên repo không kèm file nộp.
 
 Cả hai lời giải dưới đây **không dùng trọng số pretrained** (chỉ dùng kiến trúc, trọng số tự train trên dữ liệu được cấp), theo luật của kỳ thi OlpAI mà đội đang luyện.
 

@@ -8,3 +8,6 @@ __pycache__/
 *.npz
 *.zip
 submission*.csv
+
+# trừ các file nộp đã biết điểm LB, đặt trong thư mục submissions/
+!**/submissions/*.csv
