@@ -1,6 +1,6 @@
 # ImgCap - Mô tả ảnh (image captioning)
 
-Bài luyện tập CAPTION trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/).
+Bài luyện tập CAPTION trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/). Đề bài đầy đủ: [DE_BAI.md](DE_BAI.md).
 
 ## Bài toán
 
@@ -9,6 +9,8 @@ Bài luyện tập CAPTION trên [hệ thống ôn luyện PHENIKAA AI Hackathon
 - Điểm: CIDEr-D (phụ: BLEU-4, ROUGE-L).
 
 **LB public tốt nhất: 1.1927**, đạt bằng bản BLIP ở mục "Phiên bản trước". Bản không pretrained trong repo không có ghi chép LB riêng.
+
+File nộp đạt điểm này: [submissions/submission_blip_lb1.1927.csv](submissions/submission_blip_lb1.1927.csv).
 
 Lời giải trong `solution.ipynb` **không dùng trọng số pretrained** (chỉ dùng kiến trúc, trọng số tự train), theo luật của kỳ thi OlpAI mà đội đang luyện.
 
