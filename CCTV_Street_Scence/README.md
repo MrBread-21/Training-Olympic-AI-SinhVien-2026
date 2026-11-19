@@ -1,6 +1,6 @@
 # CCTV Street Scene - Phát hiện bất thường trên camera giám sát
 
-Bài luyện tập CCTV trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/).
+Bài luyện tập CCTV trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/). Đề bài đầy đủ: [DE_BAI.md](DE_BAI.md).
 
 ## Bài toán
 
@@ -9,6 +9,8 @@ Bài luyện tập CCTV trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 - Chấm điểm bất thường cho từng khung. Điểm: **AUROC gộp mọi khung test** (phụ: AP). Bất thường gồm đi sai làn, băng qua đường ngoài vạch, đỗ xe trái phép, quay đầu, đi xe đạp trên vỉa hè...
 
 **LB public tốt nhất: 0.6761.** `solve.py` với cấu hình mặc định tái tạo đúng lượt nộp LB 0.6727.
+
+Không xác định được lượt nộp đạt 0.6761. Thư mục `submissions/` có 2 lượt của `solve.py` đã biết điểm: [a = 2, LB 0.6727](submissions/submission_solve_a2_lb0.6727.csv) và [a = 1.5, LB 0.6729](submissions/submission_solve_a1.5_lb0.6729.csv).
 
 ## Phát hiện quan trọng nhất (EDA)
 
