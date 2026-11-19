@@ -13,6 +13,7 @@ Phần lớn lời giải được viết theo luật của kỳ thi: **không d
 | [MSAD](MSAD/) | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công; mô hình bảng + CNN train từ đầu, hoặc backbone ImageNet đóng băng + LR + TCN | **0.4149** (`main_scratch.py`, không pretrained) |
 
 Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ các bản dùng mô hình pretrained, viết trước khi đội chuyển sang luật không dùng pretrained. Code các bản đó không còn giữ, README của từng bài mô tả lại cách làm và số liệu.
+
 Mỗi thư mục có README riêng mô tả bài toán, cách giải chi tiết, số liệu, các hướng đã thử và bài học.
 
 ## Lưu ý
