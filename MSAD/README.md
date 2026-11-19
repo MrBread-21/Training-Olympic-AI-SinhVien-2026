@@ -1,6 +1,6 @@
 # MSAD - Nhận diện và định vị sự kiện bất thường trong video giám sát
 
-Bài luyện tập MSAD trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/).
+Bài luyện tập MSAD trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/). Đề bài đầy đủ: [DE_BAI.md](DE_BAI.md).
 
 ## Bài toán
 
@@ -11,6 +11,8 @@ Bài luyện tập MSAD trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 Dữ liệu MSAD chỉ dùng cho nghiên cứu và luyện tập theo [thoả thuận dữ liệu](https://msad-dataset.github.io/agreement.html), nên repo không chứa video, khung hình hay nhãn.
 
 **LB public tốt nhất: 0.4149**, đạt bằng bản không pretrained `main_scratch.py`.
+
+Không xác định được lượt nộp nào đạt điểm này, nên repo không kèm file nộp.
 
 ## Hai lời giải
 
