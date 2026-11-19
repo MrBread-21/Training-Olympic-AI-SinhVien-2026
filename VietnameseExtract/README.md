@@ -1,6 +1,6 @@
 # VietnameseExtract - Hỏi đáp trích xuất tiếng Việt
 
-Bài luyện tập VIQA trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/).
+Bài luyện tập VIQA trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/). Đề bài đầy đủ: [DE_BAI.md](DE_BAI.md).
 
 ## Bài toán
 
@@ -9,6 +9,8 @@ Bài luyện tập VIQA trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 - Điểm: Jaccard mức âm tiết sau khi chữ thường và bỏ dấu câu (phụ: Exact Match).
 
 **LB public tốt nhất: 0.6517**, đạt bằng bản XLM-R ở mục "Phiên bản trước". Bản không pretrained trong repo không có ghi chép LB riêng.
+
+File nộp đạt điểm này: [submissions/submission_xlmr_lb0.6517.csv](submissions/submission_xlmr_lb0.6517.csv) (XLM-R large zero-shot).
 
 Lời giải trong `solution.ipynb` **không dùng trọng số pretrained**, theo luật của kỳ thi OlpAI mà đội đang luyện (không có mô hình ngôn ngữ pretrained nào được cấp).
 
