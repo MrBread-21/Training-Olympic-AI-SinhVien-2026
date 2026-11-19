@@ -10,11 +10,13 @@ Bài luyện tập MSAD trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 
 Dữ liệu MSAD chỉ dùng cho nghiên cứu và luyện tập theo [thoả thuận dữ liệu](https://msad-dataset.github.io/agreement.html), nên repo không chứa video, khung hình hay nhãn.
 
+**LB public tốt nhất: 0.4149**, đạt bằng bản không pretrained `main_scratch.py`.
+
 ## Hai lời giải
 
 | File | Trọng số pretrained | OOF 5-fold | CV theo nhóm cảnh | Public |
 |---|---|---|---|---|
-| `main_scratch.py` | không (mọi mô hình train từ đầu) | 0.283 | 0.221 | **0.415** (bản 2 mô hình bảng) |
+| `main_scratch.py` | không (mọi mô hình train từ đầu) | 0.283 | 0.221 | **0.4149** (bản 2 mô hình bảng) |
 | `main.py` (bản cuối) | backbone ImageNet của torchvision, **đóng băng** | **0.335** | **0.326** | 0.3745 (cấu hình trước bản cuối) |
 
 "CV theo nhóm cảnh" gộp các video gần trùng nhau (cùng camera, cùng cảnh) vào cùng một fold, nên ít bị lạc quan hơn OOF thường.
@@ -64,7 +66,7 @@ Chạy khoảng 16 phút trên GTX 1650, gồm cả đọc video.
 - **Video ít thì đặc trưng tốt hơn mô hình end-to-end**: backbone đóng băng cộng bộ phân loại nhỏ ổn định hơn fine-tune; không có pretrained thì đặc trưng chuyển động và màu thủ công vẫn rất mạnh.
 - **CV phải chia theo nhóm cảnh**: nhiều video quay cùng một camera, nên CV ngẫu nhiên đánh giá quá cao.
 - **Giải mã theo đúng metric**: chọn đoạn tối đa hoá tIoU kỳ vọng thay cho ngưỡng cố định giúp tăng điểm mà không phải chỉnh tham số.
-- **Public chỉ khoảng 40% video test** nên rất nhiễu: bản không pretrained có OOF thấp hơn nhiều nhưng public lại cao hơn (0.415 so với 0.3745).
+- **Public chỉ khoảng 40% video test** nên rất nhiễu: bản không pretrained có OOF thấp hơn nhiều nhưng public lại cao hơn (0.4149 so với 0.3745).
 
 ## Chạy
 

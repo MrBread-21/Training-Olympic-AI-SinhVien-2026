@@ -9,6 +9,8 @@ Bài luyện tập IMGCLS trên [hệ thống ôn luyện PHENIKAA AI Hackathon]
 - Ảnh test **bị làm hỏng**: xoay/lật, nhiễu Gauss mạnh, mờ, lệch màu, nén JPEG chất lượng rất thấp. Ảnh train và val thì sạch.
 - Điểm: macro-F1 (phụ: accuracy).
 
+**LB public tốt nhất: 0.8074.** Điểm này khớp với bản fine-tune ResNet-50 pretrained ở mục "Phiên bản trước" (val hard 0.793); hai bản không pretrained trong repo không có ghi chép LB riêng.
+
 Cả hai lời giải dưới đây **không dùng trọng số pretrained** (chỉ dùng kiến trúc, trọng số tự train trên dữ liệu được cấp), theo luật của kỳ thi OlpAI mà đội đang luyện.
 
 ## Ý tưởng chung
@@ -49,7 +51,7 @@ Trước khi chuyển sang luật không dùng pretrained, đội đã thử Res
 | Cách làm | val sạch | val hard | LB |
 |---|---|---|---|
 | ResNet-50 đóng băng + LogisticRegression (C=0.05) trên đặc trưng của ảnh train và 3 bản làm hỏng, TTA 2 phép | 0.895 | 0.683 | 0.7015 |
-| Fine-tune ResNet-50, ảnh 128px, 19 epoch, TTA 8 phép | 0.942 | 0.793 | - |
+| Fine-tune ResNet-50, ảnh 128px, 19 epoch, TTA 8 phép | 0.942 | 0.793 | **0.8074** |
 
 ## Bài học
 

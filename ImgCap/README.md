@@ -8,6 +8,8 @@ Bài luyện tập CAPTION trên [hệ thống ôn luyện PHENIKAA AI Hackathon
 - Train: 3500 ảnh COCO, mỗi ảnh 5 câu mô tả. Val: 300 ảnh COCO. Test: 800 ảnh **nocaps** (ảnh Open Images, nhiều vật thể và bối cảnh không có trong COCO).
 - Điểm: CIDEr-D (phụ: BLEU-4, ROUGE-L).
 
+**LB public tốt nhất: 1.1927**, đạt bằng bản BLIP ở mục "Phiên bản trước". Bản không pretrained trong repo không có ghi chép LB riêng.
+
 Lời giải trong `solution.ipynb` **không dùng trọng số pretrained** (chỉ dùng kiến trúc, trọng số tự train), theo luật của kỳ thi OlpAI mà đội đang luyện.
 
 ## Ý tưởng
@@ -36,7 +38,7 @@ Trước khi chuyển sang luật không dùng pretrained, đội dùng `Salesfo
 
 | Cách làm | val CIDEr-D | LB |
 |---|---|---|
-| BLIP-large, prompt "a picture of", beam 3, `max_new_tokens=20`, `min_length=5`, `repetition_penalty=1.3`, hậu xử lý bỏ "arafed", "there is", từ lặp liền nhau | 1.503 | 1.193 |
+| BLIP-large, prompt "a picture of", beam 3, `max_new_tokens=20`, `min_length=5`, `repetition_penalty=1.3`, hậu xử lý bỏ "arafed", "there is", từ lặp liền nhau | 1.503 | **1.1927** |
 | Như trên, chọn câu bằng MBR trong các câu beam | 1.508 | - |
 
 - Beam 5 kém hơn beam 3 (1.477 so với 1.503), vì CIDEr phạt câu có độ dài lệch so với câu tham chiếu.

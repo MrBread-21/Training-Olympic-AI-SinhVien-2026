@@ -8,6 +8,8 @@ Bài luyện tập CCTV trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 - Train: 46 video **chỉ có cảnh bình thường**, không nhãn. Val: 7 video có nhãn từng khung. Test: 28 video.
 - Chấm điểm bất thường cho từng khung. Điểm: **AUROC gộp mọi khung test** (phụ: AP). Bất thường gồm đi sai làn, băng qua đường ngoài vạch, đỗ xe trái phép, quay đầu, đi xe đạp trên vỉa hè...
 
+**LB public tốt nhất: 0.6761.** `solve.py` với cấu hình mặc định tái tạo đúng lượt nộp LB 0.6727.
+
 ## Phát hiện quan trọng nhất (EDA)
 
 1. **Tỉ lệ khung bất thường chênh nhau rất nhiều giữa các video** (va03 là 5%, va07 là 83%). AUROC tính gộp mọi khung của mọi video, nên chênh lệch *giữa các video* chiếm phần lớn tín hiệu. Chuẩn hoá điểm theo từng video sẽ kéo AUROC về khoảng 0.5.
@@ -51,6 +53,7 @@ Chạy trên CPU khoảng 1.5 phút, không dùng trọng số pretrained. Đi�
 | `solve.py`: blob kNN 7 biến thể, a = 3 | 0.6671 |
 | **`solve.py`, a = 2 (mặc định)** | **0.6727** |
 | `solve.py`, a = 1.5 | 0.6729 |
+| **Lượt nộp tốt nhất** (cấu hình không được ghi lại trong log) | **0.6761** |
 
 Lúc đó đội dẫn đầu bài có LB 0.6978.
 

@@ -12,7 +12,7 @@ Pipeline
     XGB theo khung có điều kiện lớp để định vị.
  3. CNN two-stream train từ đầu (ResNet + SE + TSM cho RGB, luồng chuyển động, TCN theo thời gian; đầu khung và đầu video).
  4. Ensemble: p = 0.8 * (pA + pB) / 2 + 0.2 * pCNN, nhân P(Normal) với 0.8; đoạn sự kiện = Kadane trên xác suất khung, ngưỡng 0.4.
-OOF 5-fold: ensemble 0.283 (chỉ bảng A 0.245, B 0.223, CNN 0.205). Public 0.415 với bản 2 mô hình bảng.
+OOF 5-fold: ensemble 0.283 (chỉ bảng A 0.245, B 0.223, CNN 0.205). Public 0.4149 với bản 2 mô hình bảng.
 """
 import argparse, copy, csv, math, os, random, sys, time
 from collections import Counter

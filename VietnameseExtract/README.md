@@ -8,6 +8,8 @@ Bài luyện tập VIQA trên [hệ thống ôn luyện PHENIKAA AI Hackathon](h
 - Dữ liệu: 87 599 mẫu SQuAD v1.1 tiếng Anh, 1190 mẫu tiếng Việt (XQuAD-vi), 511 mẫu val (MLQA-vi), 2000 mẫu test.
 - Điểm: Jaccard mức âm tiết sau khi chữ thường và bỏ dấu câu (phụ: Exact Match).
 
+**LB public tốt nhất: 0.6517**, đạt bằng bản XLM-R ở mục "Phiên bản trước". Bản không pretrained trong repo không có ghi chép LB riêng.
+
 Lời giải trong `solution.ipynb` **không dùng trọng số pretrained**, theo luật của kỳ thi OlpAI mà đội đang luyện (không có mô hình ngôn ngữ pretrained nào được cấp).
 
 ## Ý tưởng
@@ -44,7 +46,7 @@ Trước khi chuyển sang luật không dùng pretrained, đội dùng mô hìn
 | `deepset/xlm-roberta-large-squad2` zero-shot | 0.651 | 0.489 |
 | Ghép logit 0.6 x large + 0.4 x `deepset/xlm-roberta-base-squad2` fine-tune trên train_vi (3 epoch, đóng băng word embedding cho vừa 4 GB VRAM) | 0.663 | 0.495 |
 
-Giải mã span: cửa sổ trượt 384 token, stride 128, 20 vị trí start/end tốt nhất mỗi cửa sổ, end ≥ start, dài tối đa 40 token. Riêng bản base sau fine-tune chỉ đạt 0.589 nhưng vẫn bổ sung được cho bản large.
+Bản này đạt LB public **0.6517**. Giải mã span: cửa sổ trượt 384 token, stride 128, 20 vị trí start/end tốt nhất mỗi cửa sổ, end ≥ start, dài tối đa 40 token. Riêng bản base sau fine-tune chỉ đạt 0.589 nhưng vẫn bổ sung được cho bản large.
 
 ## Chạy
 

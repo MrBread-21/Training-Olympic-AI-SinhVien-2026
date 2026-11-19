@@ -4,14 +4,15 @@ Lời giải của MrBread cho các bài trên [hệ thống ôn luyện PHENIKA
 
 Phần lớn lời giải được viết theo luật của kỳ thi: **không dùng trọng số pretrained** (chỉ dùng kiến trúc, trọng số tự train trên dữ liệu được cấp), hoặc chỉ dùng backbone ImageNet trong danh sách được cấp và để đóng băng. Hầu hết chạy được trên GPU 4 GB (GTX 1650, fp32) trong khoảng 20 phút.
 
-| Bài | Nhiệm vụ | Hướng giải chính | Kết quả |
+| Bài | Nhiệm vụ | Hướng giải chính | LB public tốt nhất |
 |---|---|---|---|
-| [EuroSAT](EuroSAT/) | Phân loại ảnh vệ tinh 10 lớp khi ít nhãn, ảnh test bị làm hỏng | Augmentation mô phỏng biến đổi của test, chọn model trên val bị làm hỏng, ResNet-18 train từ đầu, pseudo-label, TTA 8 phép xoay/lật | val hard macro-F1 0.665 (không pretrained) |
-| [ImgCap](ImgCap/) | Mô tả ảnh (COCO, test nocaps) | ResNet-18 train từ đầu dự đoán 400 từ khái niệm, truy hồi 20 ảnh gần nhất, chọn câu đồng thuận (MBR theo CIDEr) | val CIDEr-D 0.2725 (starter 0.069) |
-| [VietnameseExtract](VietnameseExtract/) | Hỏi đáp trích xuất tiếng Việt | Chọn câu theo IDF, sinh span ứng viên, xếp hạng bằng XGBRanker, thêm SQuAD tiếng Anh qua đặc trưng không phụ thuộc ngôn ngữ | val Jaccard 0.227 (starter 0.095) |
-| [CCTV_Street_Scence](CCTV_Street_Scence/) | Điểm bất thường từng khung, camera giám sát cố định | Điểm mức video (đường vắng) + kNN của blob vật thể so với video bình thường, chạy CPU | **LB 0.6727** |
-| [MSAD](MSAD/) | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công + backbone ImageNet đóng băng, LR + TCN, XGBoost định vị theo tIoU kỳ vọng | OOF 0.335, public 0.415 (bản không pretrained) |
+| [EuroSAT](EuroSAT/) | Phân loại ảnh vệ tinh 10 lớp khi ít nhãn, ảnh test bị làm hỏng | Augmentation mô phỏng biến đổi của test, chọn model trên val bị làm hỏng, TTA 8 phép xoay/lật; bản trong repo dùng ResNet-18 train từ đầu + pseudo-label | **0.8074** (bản fine-tune ResNet-50 pretrained); bản trong repo: val hard 0.665 |
+| [ImgCap](ImgCap/) | Mô tả ảnh (COCO, test nocaps) | Bản trong repo: ResNet-18 train từ đầu dự đoán 400 từ khái niệm, truy hồi 20 ảnh gần nhất, chọn câu đồng thuận (MBR theo CIDEr) | **1.1927** (bản BLIP pretrained); bản trong repo: val CIDEr-D 0.2725 |
+| [VietnameseExtract](VietnameseExtract/) | Hỏi đáp trích xuất tiếng Việt | Bản trong repo: chọn câu theo IDF, sinh span ứng viên, xếp hạng bằng XGBRanker, thêm SQuAD tiếng Anh | **0.6517** (bản XLM-R pretrained); bản trong repo: val Jaccard 0.227 |
+| [CCTV_Street_Scence](CCTV_Street_Scence/) | Điểm bất thường từng khung, camera giám sát cố định | Điểm mức video (đường vắng) + kNN của blob vật thể so với video bình thường, chạy CPU, không pretrained | **0.6761**; `solve.py` mặc định: 0.6727 |
+| [MSAD](MSAD/) | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công; mô hình bảng + CNN train từ đầu, hoặc backbone ImageNet đóng băng + LR + TCN | **0.4149** (`main_scratch.py`, không pretrained) |
 
+Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ các bản dùng mô hình pretrained, viết trước khi đội chuyển sang luật không dùng pretrained. Code các bản đó không còn giữ, README của từng bài mô tả lại cách làm và số liệu.
 Mỗi thư mục có README riêng mô tả bài toán, cách giải chi tiết, số liệu, các hướng đã thử và bài học.
 
 ## Lưu ý
