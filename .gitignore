@@ -1,0 +1,10 @@
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+# dữ liệu, cache, trọng số và file nộp không đưa lên repo
+*.pt
+*.pth
+*.npy
+*.npz
+*.zip
+submission*.csv
