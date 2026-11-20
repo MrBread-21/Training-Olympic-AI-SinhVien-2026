@@ -18,6 +18,6 @@ Mỗi thư mục có README riêng mô tả bài toán, cách giải chi tiết,
 
 ## Lưu ý
 
-- Repo **không chứa dữ liệu**, trọng số và file nộp. Đặt dữ liệu của từng bài vào đúng thư mục bài trước khi chạy (xem mục "Chạy" trong README của bài).
+- Repo **không chứa dữ liệu** và trọng số. Đặt dữ liệu của từng bài vào đúng thư mục bài trước khi chạy (xem mục "Chạy" trong README của bài). Chỉ kèm vài file nộp đã biết đúng điểm LB, trong thư mục `submissions/` của bài.
 - Một số bài cần `scorer.py` đi kèm gói dữ liệu của bài.
 - Điểm "val" là điểm tự đánh giá trên tập validation; điểm "LB"/"public" là điểm trên bảng xếp hạng public của hệ thống ôn luyện.
