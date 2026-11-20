@@ -13,7 +13,7 @@
   - Label smoothing: Müller và cộng sự, *When Does Label Smoothing Help?* [arXiv:1906.02629](https://arxiv.org/abs/1906.02629), mục 1-2.
   - Nhãn nhiễu: Arpit và cộng sự [arXiv:1706.05394](https://arxiv.org/abs/1706.05394) (mạng học mẫu sạch trước, học thuộc nhiễu sau); Co-teaching [arXiv:1804.06872](https://arxiv.org/abs/1804.06872), mục 3 (chọn mẫu loss nhỏ).
   - He và cộng sự, *Bag of Tricks for Image Classification* [arXiv:1812.01187](https://arxiv.org/abs/1812.01187), mục 5 (label smoothing, mixup, cosine lr).
-- **Trong máy**: `../../EuroSAT/train_img.py` (augment mô phỏng test trên GPU, val bị làm hỏng, pseudo-label, TTA D4).
+- **Trong máy**: `../../../challenges/EuroSAT/train_img.py` (augment mô phỏng test trên GPU, val bị làm hỏng, pseudo-label, TTA D4).
 
 ## Bài 1 - Phân loại khi nhãn sai và ảnh test bị làm hỏng
 

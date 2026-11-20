@@ -11,7 +11,7 @@
 - **PyTorch**: [pad_sequence](https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_sequence.html), [nn.Embedding](https://pytorch.org/docs/stable/generated/torch.nn.Embedding.html) (`padding_idx`), [nn.Conv1d](https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html) (đầu vào (B, C, L) nên cần `transpose(1, 2)`).
 - **Bài báo**: Kim, *Convolutional Neural Networks for Sentence Classification* [arXiv:1408.5882](https://arxiv.org/abs/1408.5882), mục 2 (TextCNN, max-pool theo thời gian).
 - **BM25**: Wikipedia [Okapi BM25](https://en.wikipedia.org/wiki/Okapi_BM25) (công thức, ý nghĩa k1 và b); Manning và cộng sự, [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/), chương 6 (tf-idf) và mục 11.4.3 (BM25).
-- **Trong máy**: `../../ON_TAP.md` phần 1.3; `../../VietnameseExtract/solution.ipynb` (tokenize giữ vị trí ký tự, IDF; bản đó chưa chuẩn hoá NFC, bài này phải có).
+- **Trong máy**: `../../ON_TAP.md` phần 1.3; `../../../challenges/VietnameseExtract/solution.ipynb` (tokenize giữ vị trí ký tự, IDF; bản đó chưa chuẩn hoá NFC, bài này phải có).
 
 Dữ liệu có bẫy giống văn bản thật: **train gần như toàn NFC nhưng khoảng 60% văn bản test và câu hỏi ở dạng NFD**; 20% câu mất dấu; lỗi gõ; từ của chủ đề khác chen vào.
 

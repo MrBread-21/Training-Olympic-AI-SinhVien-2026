@@ -10,7 +10,7 @@
 - **Ví dụ**: [Categorical Feature Support in Gradient Boosting](https://scikit-learn.org/stable/auto_examples/ensemble/plot_gradient_boosting_categorical.html) (so sánh one-hot, ordinal, native).
 - **Khoá ngắn**: Kaggle Learn [Intermediate Machine Learning](https://www.kaggle.com/learn/intermediate-machine-learning) (missing values, categorical variables, pipelines, cross-validation, data leakage).
 - **Bài báo**: Wolpert, *Stacked Generalization*, Neural Networks 5(2), 1992 (ý tưởng: mô hình meta học trên dự đoán ngoài fold).
-- **Trong máy**: `../../ON_TAP.md` phần 1.6 (dữ liệu bảng); `../../MSAD/main.py` docstring (dò trọng số ensemble kiểu Caruana, stacking chỉ giữ thành phần có ích).
+- **Trong máy**: `../../ON_TAP.md` phần 1.6 (dữ liệu bảng); `../../../challenges/MSAD/main.py` docstring (dò trọng số ensemble kiểu Caruana, stacking chỉ giữ thành phần có ích).
 
 ## Bài 1 - Dự đoán khách hàng rời bỏ
 

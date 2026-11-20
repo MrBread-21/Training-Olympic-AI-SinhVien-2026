@@ -8,8 +8,8 @@
 
 - **OpenCV**: [cv::VideoCapture](https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html) (`read`, `grab`, `CAP_PROP_FRAME_COUNT`; số khung báo về có thể lệch, nên đọc tuần tự một lượt).
 - **Bài báo**: TSN, Wang và cộng sự, *Temporal Segment Networks* [arXiv:1608.00859](https://arxiv.org/abs/1608.00859), mục 3.1-3.2 (lấy mẫu thưa N đoạn rải đều, gộp theo thời gian).
-- **tIoU và chọn đoạn**: [README bài MSAD](https://github.com/MrBread-21/Training-Olympic-AI-SinhVien-2026/tree/MrBread/MSAD) trên GitHub (mục giải mã tối đa hoá tIoU kỳ vọng) và hàm `segment` trong `../../MSAD/main.py`.
-- **Trong máy**: `../../ON_TAP.md` phần 1.2 (phân loại video: cache khung, gộp thời gian, kênh chuyển động); `../../MSAD/main.py` (đọc video 1 lượt, 48 vị trí, LR + TCN, XGB theo khung).
+- **tIoU và chọn đoạn**: [README bài MSAD](https://github.com/MrBread-21/Training-Olympic-AI-SinhVien-2026/tree/MrBread/MSAD) trên GitHub (mục giải mã tối đa hoá tIoU kỳ vọng) và hàm `segment` trong `../../../challenges/MSAD/main.py`.
+- **Trong máy**: `../../ON_TAP.md` phần 1.2 (phân loại video: cache khung, gộp thời gian, kênh chuyển động); `../../../challenges/MSAD/main.py` (đọc video 1 lượt, 48 vị trí, LR + TCN, XGB theo khung).
 
 ## Bài 1
 
