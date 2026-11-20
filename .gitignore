@@ -1,0 +1,17 @@
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+# dữ liệu, cache, trọng số và file nộp không đưa lên repo
+*.pt
+*.pth
+*.npy
+*.npz
+*.zip
+submission*.csv
+
+# trừ các file nộp đã biết điểm LB, đặt trong thư mục submissions/
+!**/submissions/*.csv
+
+# luyen_tay: dữ liệu, đáp án và mô hình đều tạo lại bằng tao_du_lieu.py
+luyen_tay/**/data/
+luyen_tay/**/.dap_an/
