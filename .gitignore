@@ -11,3 +11,7 @@ submission*.csv
 
 # trừ các file nộp đã biết điểm LB, đặt trong thư mục submissions/
 !**/submissions/*.csv
+
+# luyen_tay: dữ liệu, đáp án và mô hình đều tạo lại bằng tao_du_lieu.py
+luyen_tay/**/data/
+luyen_tay/**/.dap_an/
