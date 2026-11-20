@@ -17,14 +17,15 @@ Repo luyện tập của đội cho kỳ thi Olympic Trí tuệ nhân tạo sinh
 
 ### Nhánh `MrBread`
 
-| Bài | Nhiệm vụ | Hướng giải chính | LB public tốt nhất |
+| Bài | Nhiệm vụ | Hướng giải trong repo (không pretrained) | LB public tốt nhất |
 |---|---|---|---|
-| EuroSAT | Phân loại ảnh vệ tinh 10 lớp khi ít nhãn, ảnh test bị làm hỏng | Augmentation mô phỏng biến đổi của test, chọn model trên val bị làm hỏng, ResNet-18 train từ đầu + pseudo-label, TTA 8 phép xoay/lật | 0.8074 |
-| ImgCap | Mô tả ảnh (train COCO, test nocaps) | Truy hồi ảnh gần nhất + chọn câu đồng thuận (MBR theo CIDEr) | 1.1927 |
-| VietnameseExtract | Hỏi đáp trích xuất tiếng Việt | Sinh span ứng viên, xếp hạng bằng XGBRanker | 0.6517 |
-| CCTV Street Scene | Điểm bất thường từng khung, camera cố định | Điểm mức video (đường vắng) + kNN của blob vật thể, chạy CPU, không pretrained | 0.6761 |
-| MSAD | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công + mô hình bảng, hoặc backbone ImageNet đóng băng + LR + TCN | 0.4149 |
+| EuroSAT | Phân loại ảnh vệ tinh 10 lớp khi ít nhãn, ảnh test bị làm hỏng | Augmentation mô phỏng biến đổi của test, chọn model trên val bị làm hỏng, ResNet-18 train từ đầu + pseudo-label, TTA 8 phép xoay/lật | 0.8074 (bản fine-tune ResNet-50 pretrained) |
+| ImgCap | Mô tả ảnh (train COCO, test nocaps) | ResNet-18 train từ đầu dự đoán từ khái niệm, truy hồi ảnh gần nhất, chọn câu đồng thuận (MBR theo CIDEr) | 1.1927 (bản BLIP pretrained) |
+| VietnameseExtract | Hỏi đáp trích xuất tiếng Việt | Sinh span ứng viên, xếp hạng bằng XGBRanker | 0.6517 (bản XLM-R pretrained) |
+| CCTV Street Scene | Điểm bất thường từng khung, camera cố định | Điểm mức video (đường vắng) + kNN của blob vật thể, chạy CPU | 0.6761 |
+| MSAD | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công + mô hình bảng và CNN train từ đầu; thêm bản backbone ImageNet đóng băng + LR + TCN | 0.4149 (bản không pretrained) |
 
+Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ các bản dùng mô hình pretrained viết trước khi chuyển sang luật không pretrained; code các bản đó không còn giữ.
 Chi tiết từng bài (dữ liệu cần chuẩn bị, cách chạy, phân tích lỗi, nguồn tham khảo) nằm trong README của từng thư mục trên nhánh tương ứng.
 
 ## Quy ước
