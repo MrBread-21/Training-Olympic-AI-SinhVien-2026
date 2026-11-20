@@ -1,35 +1,27 @@
-# Training Olympic AI Sinh viên 2026
+# Bộ bài luyện NLP (nhánh feature/hue)
 
-Repo luyện tập của đội cho kỳ thi Olympic Trí tuệ nhân tạo sinh viên Việt Nam 2026 (OlpAI'26). Mỗi thành viên làm bài trên **nhánh riêng**; nhánh `main` chỉ giữ bản mô tả này.
+Nhánh luyện tập NLP cho kỳ thi Olympic Trí tuệ nhân tạo sinh viên Việt Nam 2026 (OlpAI'26): 16 bài chia thành 8 nhóm dạng bài, mỗi nhóm 2 bài, lấy từ các cuộc thi Kaggle, DrivenData và bộ dữ liệu nghiên cứu (có nhiều bài tiếng Việt).
 
-## Nội dung luyện tập
+Hiện nhánh mới có danh sách đề; mô tả, metric và link dữ liệu từng bài nằm trong [`NLP/README.md`](NLP/README.md).
 
-- Lời giải các bài trên [hệ thống ôn luyện PHENIKAA AI Hackathon](https://aihackathon.phenikaa-uni.edu.vn/): phân loại ảnh, mô tả ảnh, hỏi đáp tiếng Việt, phát hiện bất thường trong video giám sát.
-- Bài tập NLP tổng hợp từ các cuộc thi Kaggle, DrivenData và bộ dữ liệu nghiên cứu.
-- Luyện theo luật của kỳ thi: phần lớn lời giải **không dùng trọng số pretrained** (chỉ dùng kiến trúc, tự train) hoặc chỉ dùng backbone ImageNet được cấp, chạy offline trên GPU nhỏ trong khoảng 20 phút.
+## Danh sách bài
 
-## Các nhánh
+| Nhóm | Bài 1 | Bài 2 |
+|---|---|---|
+| 01. Phân loại văn bản | Disaster Tweets (F1) | Jigsaw Toxic Comments, đa nhãn (ROC-AUC trung bình) |
+| 02. Cảm xúc theo khía cạnh (ABSA) | UIT-ViSFD, tiếng Việt (macro-F1) | UIT-ABSA (aspect F1, sentiment F1) |
+| 03. Chuẩn hoá văn bản | Khôi phục dấu tiếng Việt (độ chính xác ký tự / từ) | Sửa lỗi chính tả tiếng Việt (exact match, độ chính xác từ) |
+| 04. Trích xuất, nhận diện tác giả | Tweet Sentiment Extraction (Jaccard) | Name That LLM (balanced accuracy) |
+| 05. Sinh văn bản, suy luận | Tóm tắt bài báo khoa học (ROUGE-2 F1) | Contradictory, My Dear Watson, NLI đa ngôn ngữ (accuracy) |
+| 06. Biểu diễn, truy hồi | U.S. Patent Phrase Matching (Pearson) | Quora Question Pairs (log loss) |
+| 07. Đánh giá LLM, kiểm chứng thông tin | LLM Classification Finetuning (log loss) | ViFactCheck, tiếng Việt (F1) |
+| 08. Bài kiểu IOAI | IOAI 2025: phát hiện ảo giác (hallucination) | IOAI 2026: bài Potato |
 
-| Nhánh | Nội dung |
-|---|---|
-| [`MrBread`](../../tree/MrBread) | Lời giải 5 bài ôn luyện PHENIKAA AI Hackathon, mỗi bài có đề, code, README mô tả cách giải, số liệu và bài học |
-| [`feature/hue`](../../tree/feature/hue) | Bộ 16 bài luyện NLP (8 nhóm dạng bài, mỗi nhóm 2 bài) |
+## Cấu trúc
 
-### Nhánh `MrBread`
+```
+NLP/
+└── README.md     danh sách 16 bài: mô tả, metric, link đề và dữ liệu, trạng thái cuộc thi
+```
 
-| Bài | Nhiệm vụ | Hướng giải trong repo (không pretrained) | LB public tốt nhất |
-|---|---|---|---|
-| EuroSAT | Phân loại ảnh vệ tinh 10 lớp khi ít nhãn, ảnh test bị làm hỏng | Augmentation mô phỏng biến đổi của test, chọn model trên val bị làm hỏng, ResNet-18 train từ đầu + pseudo-label, TTA 8 phép xoay/lật | 0.8074 (bản fine-tune ResNet-50 pretrained) |
-| ImgCap | Mô tả ảnh (train COCO, test nocaps) | ResNet-18 train từ đầu dự đoán từ khái niệm, truy hồi ảnh gần nhất, chọn câu đồng thuận (MBR theo CIDEr) | 1.1927 (bản BLIP pretrained) |
-| VietnameseExtract | Hỏi đáp trích xuất tiếng Việt | Sinh span ứng viên, xếp hạng bằng XGBRanker | 0.6517 (bản XLM-R pretrained) |
-| CCTV Street Scene | Điểm bất thường từng khung, camera cố định | Điểm mức video (đường vắng) + kNN của blob vật thể, chạy CPU | 0.6761 |
-| MSAD | Phân loại và định vị sự kiện bất thường trong video | Đặc trưng chuyển động/màu thủ công + mô hình bảng và CNN train từ đầu; thêm bản backbone ImageNet đóng băng + LR + TCN | 0.4149 (bản không pretrained) |
-
-Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ các bản dùng mô hình pretrained viết trước khi chuyển sang luật không pretrained; code các bản đó không còn giữ.
-Chi tiết từng bài (dữ liệu cần chuẩn bị, cách chạy, phân tích lỗi, nguồn tham khảo) nằm trong README của từng thư mục trên nhánh tương ứng.
-
-## Quy ước
-
-- Mỗi thành viên làm trên nhánh của mình, không đẩy thẳng lên `main`.
-- Không đưa dữ liệu của ban tổ chức, trọng số mô hình và file cache lên repo; README mỗi bài ghi rõ cần đặt dữ liệu ở đâu.
-- Mỗi bài có README nêu: bài toán, cách giải, số liệu (val và LB), những gì đã thử, bài học.
+Các nhánh khác của repo được mô tả trong README của nhánh `main`.
