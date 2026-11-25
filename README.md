@@ -14,7 +14,13 @@ challenges/                 lời giải các bài thi thử PHENIKAA AI Hackath
 ├── VietnameseExtract/
 ├── CCTV_Street_Scence/
 └── MSAD/
+selfhost_kaggle/            đề các cuộc thi đội tự host trên Kaggle      (MrBread)
+├── Nordland_PlaceRecognition/   FGVC_Aircraft_Noisy/   Kvasir_PolypSegmentation/
+├── MVTec_AnomalyDetection/      UCF101_ActionRecognition/   VOC_MultiLabel/
+└── VSFC_Sentiment/   PhoNER_COVID19/   Vietnamese_Diacritics/   IWSLT_EnVi_Translation/   ViQuAD_PassageRetrieval/
 ```
+
+`selfhost_kaggle/` chỉ chứa đề; lời giải của các bài đó đặt trong `challenges/` cùng tên bài.
 
 ## Tác giả từng phần
 
@@ -27,6 +33,7 @@ challenges/                 lời giải các bài thi thử PHENIKAA AI Hackath
 | [`challenges/VietnameseExtract/`](challenges/VietnameseExtract/) | Hỏi đáp trích xuất tiếng Việt | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
 | [`challenges/CCTV_Street_Scence/`](challenges/CCTV_Street_Scence/) | Bất thường trong video giám sát | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
 | [`challenges/MSAD/`](challenges/MSAD/) | Phân loại và định vị sự kiện bất thường | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
+| [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 11 cuộc thi Kaggle tự host (6 CV, 5 NLP) cho buổi thi thử 26/11 | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | `main` |
 
 ---
 
@@ -106,7 +113,7 @@ Mỗi thư mục có README riêng mô tả bài toán, cách giải chi tiết,
 
 ## Quy ước
 
-- Bài luyện tập theo chủ đề đặt trong `luyen_tap/<chủ đề>/`; lời giải bài thi thử, cuộc thi đặt trong `challenges/<tên bài>/`.
-- Mỗi thành viên làm trên nhánh của mình rồi gộp vào `main` bằng merge (giữ nguyên commit và tên tác giả), không đẩy thẳng lên `main`.
+- Bài luyện tập theo chủ đề đặt trong `luyen_tap/<chủ đề>/`; đề các cuộc thi tự host đặt trong `selfhost_kaggle/<tên bài>/`; lời giải bài thi thử, cuộc thi đặt trong `challenges/<tên bài>/`.
+- Mỗi thành viên làm trên nhánh của mình rồi gộp vào `main` bằng merge (giữ nguyên commit và tên tác giả).
 - Không đưa dữ liệu của ban tổ chức, trọng số mô hình và file cache lên repo; README mỗi bài ghi rõ cần đặt dữ liệu ở đâu.
 - Mỗi bài có README nêu: bài toán, cách giải, số liệu (val và LB), những gì đã thử, bài học.
