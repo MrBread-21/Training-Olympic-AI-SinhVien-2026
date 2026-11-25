@@ -1,0 +1,111 @@
+nạp 55084 ảnh từ zip trong 9.7s
+train 16345 cặp, val 2894 cặp
+[  0.3m] step 50 loss 1.407 lr 1.39e-04 298 img/s
+[  0.6m] step 100 loss 0.575 lr 2.51e-04 338 img/s
+[  0.9m] step 150 loss 0.253 lr 3.00e-04 357 img/s
+[  1.2m] step 200 loss 0.122 lr 3.00e-04 369 img/s
+[  1.4m] step 250 loss 0.073 lr 2.99e-04 374 img/s
+   VAL {'R@1': 0.8894, 'R@5': 0.973, 'R@10': 0.9851}
+[  1.9m] step 300 loss 0.054 lr 2.98e-04 342 img/s
+[  2.1m] step 350 loss 0.039 lr 2.98e-04 354 img/s
+[  2.4m] step 400 loss 0.040 lr 2.97e-04 360 img/s
+[  2.6m] step 450 loss 0.030 lr 2.96e-04 369 img/s
+[  2.8m] step 500 loss 0.029 lr 2.95e-04 376 img/s
+   VAL {'R@1': 0.8808, 'R@5': 0.9561, 'R@10': 0.9755}
+[  3.3m] step 550 loss 0.028 lr 2.92e-04 360 img/s
+[  3.5m] step 600 loss 0.026 lr 2.91e-04 365 img/s
+[  3.7m] step 650 loss 0.029 lr 2.89e-04 369 img/s
+[  4.0m] step 700 loss 0.025 lr 2.87e-04 375 img/s
+[  4.2m] step 750 loss 0.022 lr 2.85e-04 378 img/s
+[  4.5m] step 800 loss 0.019 lr 2.83e-04 382 img/s
+   VAL {'R@1': 0.907, 'R@5': 0.9727, 'R@10': 0.9869}
+[  4.9m] step 850 loss 0.019 lr 2.79e-04 372 img/s
+[  5.1m] step 900 loss 0.021 lr 2.77e-04 375 img/s
+[  5.3m] step 950 loss 0.020 lr 2.74e-04 379 img/s
+[  5.6m] step 1000 loss 0.020 lr 2.72e-04 382 img/s
+[  5.8m] step 1050 loss 0.021 lr 2.69e-04 385 img/s
+   VAL {'R@1': 0.9046, 'R@5': 0.9706, 'R@10': 0.9834}
+[  6.2m] step 1100 loss 0.020 lr 2.64e-04 378 img/s
+[  6.4m] step 1150 loss 0.016 lr 2.61e-04 382 img/s
+[  6.7m] step 1200 loss 0.017 lr 2.58e-04 384 img/s
+[  6.9m] step 1250 loss 0.016 lr 2.55e-04 386 img/s
+[  7.1m] step 1300 loss 0.018 lr 2.52e-04 389 img/s
+[  7.3m] step 1350 loss 0.018 lr 2.48e-04 392 img/s
+   VAL {'R@1': 0.9008, 'R@5': 0.9675, 'R@10': 0.9827}
+[  7.8m] step 1400 loss 0.016 lr 2.42e-04 384 img/s
+[  8.0m] step 1450 loss 0.015 lr 2.39e-04 386 img/s
+[  8.2m] step 1500 loss 0.015 lr 2.35e-04 388 img/s
+[  8.5m] step 1550 loss 0.014 lr 2.31e-04 389 img/s
+[  8.7m] step 1600 loss 0.013 lr 2.27e-04 391 img/s
+[  8.9m] step 1650 loss 0.014 lr 2.23e-04 394 img/s
+   VAL {'R@1': 0.9036, 'R@5': 0.9713, 'R@10': 0.9841}
+[  9.3m] step 1700 loss 0.013 lr 2.17e-04 389 img/s
+[  9.5m] step 1750 loss 0.014 lr 2.13e-04 391 img/s
+[  9.8m] step 1800 loss 0.013 lr 2.09e-04 393 img/s
+[ 10.0m] step 1850 loss 0.010 lr 2.05e-04 395 img/s
+[ 10.2m] step 1900 loss 0.010 lr 2.01e-04 397 img/s
+[ 10.4m] step 1950 loss 0.010 lr 1.97e-04 399 img/s
+   VAL {'R@1': 0.9129, 'R@5': 0.9741, 'R@10': 0.9865}
+[ 10.8m] step 2000 loss 0.013 lr 1.90e-04 394 img/s
+[ 11.1m] step 2050 loss 0.012 lr 1.85e-04 395 img/s
+[ 11.3m] step 2100 loss 0.011 lr 1.80e-04 396 img/s
+[ 11.6m] step 2150 loss 0.009 lr 1.75e-04 396 img/s
+[ 11.8m] step 2200 loss 0.011 lr 1.70e-04 396 img/s
+   VAL {'R@1': 0.9178, 'R@5': 0.98, 'R@10': 0.99}
+[ 12.3m] step 2250 loss 0.011 lr 1.61e-04 390 img/s
+[ 12.5m] step 2300 loss 0.012 lr 1.56e-04 391 img/s
+[ 12.8m] step 2350 loss 0.012 lr 1.51e-04 392 img/s
+[ 13.1m] step 2400 loss 0.010 lr 1.46e-04 392 img/s
+[ 13.3m] step 2450 loss 0.012 lr 1.41e-04 392 img/s
+   VAL {'R@1': 0.9167, 'R@5': 0.9765, 'R@10': 0.9869}
+[ 13.8m] step 2500 loss 0.011 lr 1.32e-04 387 img/s
+[ 14.0m] step 2550 loss 0.012 lr 1.27e-04 387 img/s
+[ 14.3m] step 2600 loss 0.010 lr 1.23e-04 388 img/s
+[ 14.6m] step 2650 loss 0.008 lr 1.18e-04 388 img/s
+[ 14.8m] step 2700 loss 0.007 lr 1.13e-04 389 img/s
+   VAL {'R@1': 0.933, 'R@5': 0.982, 'R@10': 0.9896}
+[ 15.2m] step 2750 loss 0.007 lr 1.05e-04 385 img/s
+[ 15.5m] step 2800 loss 0.007 lr 1.00e-04 385 img/s
+[ 15.7m] step 2850 loss 0.007 lr 9.56e-05 386 img/s
+[ 16.0m] step 2900 loss 0.008 lr 9.10e-05 387 img/s
+[ 16.2m] step 2950 loss 0.008 lr 8.65e-05 387 img/s
+[ 16.5m] step 3000 loss 0.007 lr 8.20e-05 388 img/s
+   VAL {'R@1': 0.9288, 'R@5': 0.98, 'R@10': 0.9893}
+[ 16.9m] step 3050 loss 0.008 lr 7.47e-05 384 img/s
+[ 17.2m] step 3100 loss 0.008 lr 7.05e-05 385 img/s
+[ 17.4m] step 3150 loss 0.007 lr 6.63e-05 385 img/s
+[ 17.7m] step 3200 loss 0.007 lr 6.22e-05 386 img/s
+[ 18.0m] step 3250 loss 0.006 lr 5.82e-05 386 img/s
+   VAL {'R@1': 0.9323, 'R@5': 0.98, 'R@10': 0.9893}
+[ 18.4m] step 3300 loss 0.007 lr 5.17e-05 383 img/s
+[ 18.6m] step 3350 loss 0.007 lr 4.80e-05 383 img/s
+[ 18.9m] step 3400 loss 0.008 lr 4.45e-05 384 img/s
+[ 19.2m] step 3450 loss 0.007 lr 4.10e-05 384 img/s
+[ 19.4m] step 3500 loss 0.007 lr 3.77e-05 385 img/s
+   VAL {'R@1': 0.9295, 'R@5': 0.9806, 'R@10': 0.991}
+[ 19.8m] step 3550 loss 0.006 lr 3.24e-05 382 img/s
+[ 20.1m] step 3600 loss 0.005 lr 2.93e-05 382 img/s
+[ 20.3m] step 3650 loss 0.006 lr 2.64e-05 383 img/s
+[ 20.6m] step 3700 loss 0.006 lr 2.37e-05 383 img/s
+[ 20.9m] step 3750 loss 0.007 lr 2.10e-05 383 img/s
+   VAL {'R@1': 0.9302, 'R@5': 0.9796, 'R@10': 0.9883}
+[ 21.3m] step 3800 loss 0.006 lr 1.70e-05 381 img/s
+[ 21.6m] step 3850 loss 0.006 lr 1.47e-05 381 img/s
+[ 21.8m] step 3900 loss 0.005 lr 1.26e-05 381 img/s
+[ 22.1m] step 3950 loss 0.006 lr 1.07e-05 382 img/s
+[ 22.3m] step 4000 loss 0.005 lr 8.95e-06 382 img/s
+   VAL {'R@1': 0.9292, 'R@5': 0.9775, 'R@10': 0.9876}
+[ 22.8m] step 4050 loss 0.005 lr 6.31e-06 380 img/s
+[ 23.0m] step 4100 loss 0.005 lr 4.95e-06 380 img/s
+[ 23.3m] step 4150 loss 0.006 lr 3.78e-06 380 img/s
+[ 23.5m] step 4200 loss 0.005 lr 2.81e-06 381 img/s
+[ 23.7m] step 4250 loss 0.005 lr 2.02e-06 382 img/s
+[ 23.9m] step 4300 loss 0.006 lr 1.43e-06 383 img/s
+   VAL {'R@1': 0.9288, 'R@5': 0.9782, 'R@10': 0.9872}
+[ 24.3m] step 4350 loss 0.006 lr 6.73e-07 382 img/s
+[ 24.5m] step 4400 loss 0.005 lr 3.55e-07 384 img/s
+[ 24.7m] step 4450 loss 0.005 lr 1.32e-07 385 img/s
+[ 24.9m] step 4500 loss 0.005 lr 1.00e-08 385 img/s
+train xong: 4517 bước, 25.0 phút
+VAL cuối {'R@1': 0.9292, 'R@5': 0.9779, 'R@10': 0.9872}
+ghi submission_fast.csv (8253 dòng), tổng 25.6 phút
