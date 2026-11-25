@@ -25,6 +25,10 @@ DS = {  # tên: (repo, các file cần lấy; None = cả repo)
     "iwslt": ("thainq107/iwslt2015-en-vi", None),
     "viquad": ("taidng/UIT-ViQuAD2.0", None),
     "news": ("NamSyntax/vietnamese-news-classification", ["data/train-00000-of-00002.parquet", "README.md"]),
+    "ktvic": ("ai-enthusiasm-community/KTVIC", None),
+    "speech": ("mteb/speech-commands-mini", None),
+    "homecredit": ("mohameddhameem/home-credit-default-risk", ["application_train_dated/*", "bureau/*", "previous_application/*", "README.md"]),
+    "cifar10": ("uoft-cs/cifar10", None),
 }
 MVTEC_LOAI = {"bottle", "carpet", "hazelnut", "metal_nut", "screw"}
 

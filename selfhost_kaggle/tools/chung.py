@@ -52,6 +52,10 @@ def sinh_metric(host, ten_metric):
         phu.append(inspect.getsource(metrics._recall))
     if ten_metric in ("bleu4",):
         phu.append(inspect.getsource(metrics._tach))
+    if ten_metric == "cider_d":
+        phu.append(inspect.getsource(metrics._cider_toks))
+    if ten_metric == "adv_success":
+        phu.append("_TRONG_SO = {}  # THAY_TRONG_SO\n\n\n" + inspect.getsource(metrics._cnn_np))
     f = getattr(metrics, ten_metric)
     doc = inspect.cleandoc(f.__doc__ or ten_metric).replace('"""', "'''")
     doc = "\n".join("    " + d if d else "" for d in doc.splitlines())

@@ -3,6 +3,10 @@ Mỗi bài: <Bài>/upload (đưa lên Kaggle làm Data), <Bài>/host (solution.c
 
 Seed quyết định id ngẫu nhiên, cách chia Public/Private, nhãn nhiễu và ảnh bị làm hỏng, nên chính là "chìa khoá" của đáp án:
 đặt qua biến môi trường SELFHOST_SEED, không ghi vào repo. Seed của buổi thi 26/11 không công bố."""
+try:  # torch phải nạp trước pandas/pyarrow trên Windows, nếu không lỗi DLL (dùng cho cv7)
+    import torch  # noqa: F401
+except ImportError:
+    pass
 import html
 import io
 import os
@@ -438,8 +442,10 @@ def nlp7():
     _dimabsa_goi("DimABSA_Quad", "dimabsa-quad", train, dev, test, "quadruplets", lambda x: [])
 
 
+from xay_de_them import au1, cv6, cv7, ml1, ml2, nlp8  # noqa: E402  (các dạng bài thêm sau)
+
 if __name__ == "__main__":
-    bai = sys.argv[1:] or ["cv0", "cv1", "cv2", "cv3", "cv4", "cv5", "nlp1", "nlp2", "nlp3", "nlp4", "nlp5", "nlp6", "nlp7"]
+    bai = sys.argv[1:] or ["cv0", "cv1", "cv2", "cv3", "cv4", "cv5", "nlp1", "nlp2", "nlp3", "nlp4", "nlp5", "nlp6", "nlp7", "nlp8", "cv6", "cv7", "au1", "ml1", "ml2"]
     for b in bai:
         print(b, flush=True)
         globals()[b]()

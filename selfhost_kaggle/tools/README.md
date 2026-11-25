@@ -10,19 +10,26 @@ Seed quyết định id ngẫu nhiên, cách chia Public/Private, nhãn nhiễu,
 
 ```
 cd selfhost_kaggle
-python tools/tai_du_lieu.py                       # khoảng 24 GB vào raw/, Nordland chiếm phần lớn (dimabsa: 3 MB)
+python tools/tai_du_lieu.py                       # khoảng 26 GB vào raw/, Nordland chiếm phần lớn
 python tools/giai_nen_nordland.py winter          # jpg 640x360, mỗi mùa khoảng 15 phút
 python tools/giai_nen_nordland.py summer
-SELFHOST_SEED=2026 python tools/xay_de.py         # dựng cả 13 bài (khoảng 1 giờ, VOC và Nordland lâu nhất)
+SELFHOST_SEED=2026 python tools/xay_de.py         # dựng cả 19 bài (khoảng 1,5 giờ, VOC và Nordland lâu nhất)
 python tools/kiem_tra_metric.py Nordland_PlaceRecognition VSFC_Sentiment ...
 bash tools/chay_baseline.sh Nordland_PlaceRecognition VSFC_Sentiment ...
+python tools/sinh_kaggle_md.py <Bài> ...          # KAGGLE.md của 6 bài dạng bổ sung, sinh từ README.md
 python tools/dong_goi.py                          # <Bài>/<Bài>_data.zip
 ```
 
-- `xay_de.py cv0 cv1 ... nlp7`: dựng từng bài (cv0 là Nordland_PlaceRecognition, cv1 FGVC_Aircraft_Noisy, cv2 Kvasir_PolypSegmentation, cv3 MVTec_AnomalyDetection, cv4 UCF101_ActionRecognition, cv5 VOC_MultiLabel, nlp1 VSFC_Sentiment, nlp2 PhoNER_COVID19, nlp3 Vietnamese_Diacritics, nlp4 IWSLT_EnVi_Translation, nlp5 ViQuAD_PassageRetrieval, nlp6 DimABSA_VA, nlp7 DimABSA_Quad).
+- `xay_de.py cv0 cv1 ... nlp7`: dựng từng bài (cv0 là Nordland_PlaceRecognition, cv1 FGVC_Aircraft_Noisy, cv2 Kvasir_PolypSegmentation, cv3 MVTec_AnomalyDetection, cv4 UCF101_ActionRecognition, cv5 VOC_MultiLabel, nlp1 VSFC_Sentiment, nlp2 PhoNER_COVID19, nlp3 Vietnamese_Diacritics, nlp4 IWSLT_EnVi_Translation, nlp5 ViQuAD_PassageRetrieval, nlp6 DimABSA_VA, nlp7 DimABSA_Quad, nlp8 ViQuAD_ExtractiveQA, cv6 KTVIC_Captioning, cv7 CIFAR_Adversarial, au1 SpeechCommands_KWS, ml1 Robot_PathPlanning, ml2 HomeCredit_Tabular). Các bài từ nlp8 nằm trong `xay_de_them.py`.
 - `SELFHOST_RAW=<thư mục>`: dùng dữ liệu gốc ở chỗ khác thay cho `selfhost_kaggle/raw/`; `SELFHOST_NORDLAND=<thư mục>` riêng cho Nordland (chứa `dataset_imageNames/` và `anh640/`).
 - Bài Nordland dựng theo đề chính thức tác vụ 2 vòng sơ loại OlpAI'26: 4 đoạn tuyến (train 1.400 hè / 14.000 đông, validation 300 / 3.000, public 450, private 460, kho đông test 9.100), ảnh hè của validation và test bị làm hỏng (`lam_hong_vpr`), private test nằm trong `private_test.zip` mã hoá ZipCrypto, mật khẩu ghi ở `host/mat_khau_private_test.txt`.
 - Hai bài DimABSA dựng từ DimABSA2026 (SemEval-2026 Task 3, Track A, eng-restaurant, commit bdc93be), đổi tên trường sang định dạng đề OlpAI'26 (`id`, `text`, `aspects` / `quadruplets`, `valence`, `arousal`). Test 1.000 câu mỗi subtask chia 500 public (`test.jsonl`) và 500 private (`private_test.zip` có mật khẩu). `SELFHOST_DIMABSA=<thư mục>` nếu file jsonl gốc nằm chỗ khác `raw/dimabsa/`. Metric `rmse_va` và `continuous_f1` đã đối chiếu với bộ chấm chính thức `metrics_subtask_1_2_3.py`: trùng tới 12 chữ số.
+- Sáu bài dạng bổ sung (`xay_de_them.py`) đều đặt private test trong `private_test.zip` có mật khẩu:
+  - `cv7` train hai TinyCNN từ đầu trên CIFAR-10 (khoảng 4 phút trên GTX 1650): A đưa cho thí sinh (`model_A.pt`), B giữ kín. Trọng số cả hai (float16, base64) được chèn vào `host/metric.py`, metric chạy CNN bằng numpy.
+  - `au1` chia train/test theo người nói và trộn tạp âm tổng hợp vào 70% file test.
+  - `ml1` tự sinh bản đồ và tính lời giải tối ưu (Dijkstra + quy hoạch động trên tập điểm mốc).
+  - `ml2` đổi mã khách hàng Home Credit để không tra ngược được nhãn gốc, chia test theo thời gian (quý 3 public, quý 4 private).
+  - Trên Windows phải nạp torch trước pandas, nếu không lỗi DLL; `xay_de.py` đã nạp torch đầu tiên.
 - `kiem_tra_metric.py`: nộp đáp án phải ra điểm tối đa, nộp thiếu dòng phải báo lỗi; ghi `host/nop_dung_het.csv` để nộp thử trên Kaggle.
 - `chay_baseline.sh`: điểm baseline ghi vào `host/min_score.txt`, dùng làm Min_Score.
 - `cham.py <Bài> <file.csv>`: chấm tại chỗ khi Kaggle lỗi, in điểm Public, Private, toàn bộ.
