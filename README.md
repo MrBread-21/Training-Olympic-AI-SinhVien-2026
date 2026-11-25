@@ -75,7 +75,7 @@ Xem thêm [`luyen_tap/CV/README.md`](luyen_tap/CV/README.md). Một số đề n
 
 | Bài | Nội dung | Metric | Baseline (public) |
 |---|---|---|---|
-| [Nordland_PlaceRecognition](selfhost_kaggle/Nordland_PlaceRecognition/) | Tìm ảnh mùa hè cùng vị trí với ảnh mùa đông (làm lại tác vụ 2 vòng loại OlpAI'26) | Recall@1 | 0.069 |
+| [Nordland_PlaceRecognition](selfhost_kaggle/Nordland_PlaceRecognition/) | Với mỗi ảnh mùa hè (bị làm hỏng), tìm ảnh mùa đông cùng vị trí; dựng theo đúng đề tác vụ 2 vòng sơ loại OlpAI'26 | Recall@1 (0-100, ±10 khung) | 4.22 |
 | [FGVC_Aircraft_Noisy](selfhost_kaggle/FGVC_Aircraft_Noisy/) | 70 họ máy bay, 15% nhãn train sai, 60% ảnh test bị làm hỏng | Macro-F1 | 0.338 |
 | [Kvasir_PolypSegmentation](selfhost_kaggle/Kvasir_PolypSegmentation/) | Phân đoạn polyp nội soi, nộp RLE | Dice | 0.508 |
 | [MVTec_AnomalyDetection](selfhost_kaggle/MVTec_AnomalyDetection/) | Phát hiện sản phẩm lỗi, train chỉ có ảnh tốt | AUROC | 0.642 |
@@ -112,6 +112,8 @@ Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ
 | Bài | Hướng giải chính | Val | Test (public / private) |
 |---|---|---|---|
 | [Nordland_PlaceRecognition](challenges/Nordland_PlaceRecognition/) | ResNet-18 ImageNet tới layer3, descriptor lưới không gian 4x7, InfoNCE đông-hè với negative là các khung liền kề, đóng băng BatchNorm; train 25 phút trên GTX 1650 | R@1 0.929 | **0.814 / 0.835** (baseline 0.069) |
+
+Lời giải Nordland được viết cho bản đề giả định trước đây (ảnh đông tìm ảnh hè, dung sai ±2 khung, thang 0-1); đề đã được dựng lại theo văn bản chính thức nên các con số trên không so được với đề hiện tại.
 
 Mỗi thư mục có README riêng: bài toán, cách giải, số liệu, các hướng đã thử và bài học. Điểm "val" là điểm tự đánh giá trên tập validation tự chia; điểm "LB"/"public" là điểm trên bảng xếp hạng.
 

@@ -8,7 +8,7 @@ Thư mục này chứa **đề** và [`tools/`](tools/) để dựng lại đề
 
 | Bài | Nội dung | Metric | Baseline (public / private) |
 |---|---|---|---|
-| [Nordland_PlaceRecognition](Nordland_PlaceRecognition/) | Tìm ảnh mùa hè cùng vị trí với ảnh mùa đông trên tuyến đường sắt Nordland (làm lại tác vụ 2 vòng loại OlpAI'26) | Recall@1 | 0.069 / 0.085 |
+| [Nordland_PlaceRecognition](Nordland_PlaceRecognition/) | Với mỗi ảnh mùa hè (bị làm hỏng), tìm ảnh mùa đông cùng vị trí; dựng theo đúng đề tác vụ 2 vòng sơ loại OlpAI'26 | Recall@1 (0-100, ±10 khung) | 4.22 / 13.70 |
 | [FGVC_Aircraft_Noisy](FGVC_Aircraft_Noisy/) | Phân loại 70 họ máy bay, 15% nhãn train sai, 60% ảnh test bị làm hỏng | Macro-F1 | 0.338 / 0.329 |
 | [Kvasir_PolypSegmentation](Kvasir_PolypSegmentation/) | Phân đoạn polyp trong ảnh nội soi, nộp RLE | Dice | 0.508 / 0.505 |
 | [MVTec_AnomalyDetection](MVTec_AnomalyDetection/) | Phát hiện sản phẩm lỗi khi train chỉ có ảnh tốt, 5 loại sản phẩm | AUROC | 0.642 / 0.635 |
@@ -54,7 +54,7 @@ Dữ liệu và đáp án (`solution.csv` có cột `Usage` chia Public/Private)
 
 | Metric | Hàm trong `metrics.py` | Dùng cho |
 |---|---|---|
-| Recall@1, dung sai 2 khung | `recall_at_1` (+ `_recall`) | Nordland_PlaceRecognition |
+| Recall@1 thang 0-100, dung sai ±10 khung, luật chấm của đề OlpAI'26 | `recall_at_1_vpr` | Nordland_PlaceRecognition |
 | Macro-F1 | `macro_f1` | FGVC_Aircraft_Noisy, UCF101_ActionRecognition, VSFC_Sentiment |
 | Dice trung bình, mask RLE | `mean_dice` (+ `rle_decode`) | Kvasir_PolypSegmentation |
 | AUROC | `auroc` | MVTec_AnomalyDetection |

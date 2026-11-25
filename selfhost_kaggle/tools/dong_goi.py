@@ -13,6 +13,7 @@ for b in bai:
         for p in sorted((d / "upload").rglob("*")):
             if p.is_file():
                 f.write(p, p.relative_to(d / "upload"))
-        for extra in ["baseline.py", "README.md"]:
-            f.write(d / extra, extra)
+        for extra in ["baseline.py", "baseline.ipynb", "README.md"]:
+            if (d / extra).exists():
+                f.write(d / extra, extra)
     print(f"{b}: {z.stat().st_size / 1e6:.0f} MB")

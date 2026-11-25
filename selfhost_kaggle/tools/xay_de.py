@@ -17,7 +17,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from PIL import Image
 
-from chung import GOC, RAW, ghi_goi, lam_hong, ma_id, rle_encode, thu_muc, usage
+from chung import GOC, RAW, ghi_goi, hex_id, lam_hong, lam_hong_vpr, ma_id, rle_encode, thu_muc, usage, zip_mat_khau
 
 if "SELFHOST_SEED" not in os.environ:
     sys.exit("Đặt biến môi trường SELFHOST_SEED (một số nguyên bí mật) trước khi dựng đề.")
@@ -39,37 +39,69 @@ def thu_nho(im, canh_dai):
 
 
 # ======================================================================== CV0 Nordland
+# Dựng theo đề chính thức tác vụ 2 vòng sơ loại OlpAI'26 "Định vị tàu hoả bốn mùa".
+DOAN = {  # đoạn tuyến (theo thứ tự trong danh sách 27.592 khung đã lọc), các đoạn cách nhau 400 khung
+    "train": (0, 14000), "validation": (14400, 17400), "public": (17800, 22300), "private": (22700, 27300)}
+
+
 def cv0():
+    import hashlib
     up, host = thu_muc("Nordland_PlaceRecognition")
-    anh_dir = RAW / "nordland" / "anh"  # tạo bằng giai_nen_nordland.py
-    ten = open(RAW / "nordland/dataset_imageNames/nordland_imageNames.txt").read().split()
-    ten = [t.replace(".png", ".jpg") for t in ten]
-    n = len(ten)
-    cat = int(n * 0.7)
-    tr, te = list(range(0, cat - 25)), list(range(cat + 25, n))  # bỏ 50 khung ở giữa để train/test không chạm nhau
-    (up / "train/summer").mkdir(parents=True); (up / "train/winter").mkdir(parents=True)
-    rows = []
-    for k, i in enumerate(tr):
-        f = f"{k:05d}.jpg"
-        for mua in ["summer", "winter"]:
-            (up / f"train/{mua}/{f}").write_bytes((anh_dir / mua / ten[i]).read_bytes())
-        rows.append((k, f"train/summer/{f}", f"train/winter/{f}"))
-    pd.DataFrame(rows, columns=["frame", "summer_path", "winter_path"]).to_csv(up / "train.csv", index=False)
-    # test: truy vấn mùa đông, database mùa hè, id ngẫu nhiên, xáo trộn thứ tự
-    qid, did = ma_id(len(te), SEED, "q"), ma_id(len(te), SEED + 1, "d")
-    (up / "test/query").mkdir(parents=True); (up / "test/database").mkdir(parents=True)
-    for j, i in enumerate(te):
-        (up / f"test/query/{qid[j]}.jpg").write_bytes((anh_dir / "winter" / ten[i]).read_bytes())
-        (up / f"test/database/{did[j]}.jpg").write_bytes((anh_dir / "summer" / ten[i]).read_bytes())
+    nord = Path(os.environ.get("SELFHOST_NORDLAND", RAW / "nordland"))
+    anh_dir = nord / "anh640"  # tạo bằng giai_nen_nordland.py (jpg 640x360)
+    ten = open(nord / "dataset_imageNames/nordland_imageNames.txt").read().split()
+    pos = [int(t[7:12]) for t in ten]  # images-08377.png -> 8377: số thứ tự khung của bản quay
     rng = np.random.default_rng(SEED)
-    pd.DataFrame({"id": sorted(qid)}).to_csv(up / "query.csv", index=False)
-    pd.DataFrame({"id": sorted(did)}).to_csv(up / "database.csv", index=False)
-    pos = [" ".join(did[k] for k in range(max(0, j - 2), min(len(te), j + 3))) for j in range(len(te))]
-    sol = pd.DataFrame({"id": qid, "positives": pos, "Usage": usage(len(te), SEED, khoi=100)})
-    sol = sol.sample(frac=1, random_state=SEED).reset_index(drop=True)
-    sample = pd.DataFrame({"id": sol.id, "predictions": [" ".join(rng.choice(did, 10, replace=False)) for _ in range(len(sol))]})
-    ghi_goi(up, host, sol, sample, "recall_at_1")
-    print(f"  train {len(tr)} cặp, test {len(te)} truy vấn / {len(te)} database")
+    dung = set()
+
+    def chep(src, dst, hong):
+        if hong:
+            lam_hong_vpr(Image.open(src).convert("RGB"), rng).save(dst, quality=90)
+        else:
+            dst.write_bytes(src.read_bytes())
+
+    sol_rows, private_files = [], []
+    for doan, (a, b) in DOAN.items():
+        idx = list(range(a, b))
+        he = idx[5::10]  # ảnh mùa hè: 1 ảnh mỗi 10 khung; ảnh mùa đông: mọi khung
+        hong = doan != "train"  # ảnh hè của validation và test bị làm hỏng, train giữ nguyên chất lượng
+        if doan in ("train", "validation"):
+            sid, wid = hex_id(len(he), rng, "s", dung), hex_id(len(idx), rng, "w", dung)
+            (up / doan / "summer").mkdir(parents=True); (up / doan / "winter").mkdir(parents=True)
+            for i, k in zip(he, sid):
+                chep(anh_dir / "summer" / ten[i].replace(".png", ".jpg"), up / doan / "summer" / f"{k}.jpg", hong)
+            for i, k in zip(idx, wid):
+                chep(anh_dir / "winter" / ten[i].replace(".png", ".jpg"), up / doan / "winter" / f"{k}.jpg", False)
+            pd.DataFrame({"summer_id": sid, "position": [pos[i] for i in he]}).sample(frac=1, random_state=SEED).to_csv(up / f"{doan}_summer.csv", index=False)
+            pd.DataFrame({"winter_id": wid, "position": [pos[i] for i in idx]}).sample(frac=1, random_state=SEED).to_csv(up / f"{doan}_winter.csv", index=False)
+            print(f"  {doan}: {len(he)} ảnh hè, {len(idx)} ảnh đông")
+            continue
+        qid, wid = hex_id(len(he), rng, "q", dung), hex_id(len(idx), rng, "w", dung)
+        (up / "test/database").mkdir(parents=True, exist_ok=True); (up / "test/queries").mkdir(parents=True, exist_ok=True)
+        for i, k in zip(idx, wid):
+            chep(anh_dir / "winter" / ten[i].replace(".png", ".jpg"), up / "test/database" / f"{k}.jpg", False)
+        wpos = np.array([pos[i] for i in idx])
+        for i, k in zip(he, qid):
+            src = anh_dir / "summer" / ten[i].replace(".png", ".jpg")
+            if doan == "public":
+                chep(src, up / "test/queries" / f"{k}.jpg", True)
+            else:
+                b_ = io.BytesIO(); lam_hong_vpr(Image.open(src).convert("RGB"), rng).save(b_, "JPEG", quality=90)
+                private_files.append((f"private_test/queries/{k}.jpg", b_.getvalue()))
+            sol_rows.append((k, " ".join(np.array(wid)[np.abs(wpos - pos[i]) <= 10]), "Public" if doan == "public" else "Private"))
+        print(f"  {doan}: {len(he)} ảnh hè cần định vị, {len(idx)} ảnh đông vào test/database")
+    mk = hashlib.sha256(f"nordland-{SEED}".encode()).hexdigest()[:10]
+    private_files.sort()
+    zip_mat_khau(up / "private_test.zip", private_files, mk)
+    (host / "mat_khau_private_test.txt").write_text(mk + "\n", encoding="utf-8")
+    sol = pd.DataFrame(sol_rows, columns=["query_id", "positives", "Usage"]).sample(frac=1, random_state=SEED).reset_index(drop=True)
+    db = sorted(p.stem for p in (up / "test/database").glob("*.jpg"))
+    sample = pd.DataFrame({"query_id": sol.query_id, "winter_id": rng.choice(db, len(sol))})
+    (up / "LICENSE-DATASET.txt").write_text(
+        "Nordland dataset (NRK, Sünderhauf và cộng sự 2013), bản trên Hugging Face Somayeh-h/Nordland.\n"
+        "Giấy phép CC BY-NC-SA 4.0: chỉ dùng phi thương mại, ghi nguồn, chia sẻ cùng giấy phép.\n", encoding="utf-8")
+    ghi_goi(up, host, sol, sample, "recall_at_1_vpr")
+    print(f"  test/database: {len(db)} ảnh; mật khẩu private_test.zip ghi ở host/mat_khau_private_test.txt")
 
 
 # ======================================================================== CV1 máy bay
