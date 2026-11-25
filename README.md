@@ -21,7 +21,7 @@ selfhost_kaggle/            đề các cuộc thi đội tự host trên Kaggle 
 └── VSFC_Sentiment/   PhoNER_COVID19/   Vietnamese_Diacritics/   IWSLT_EnVi_Translation/   ViQuAD_PassageRetrieval/
 ```
 
-`selfhost_kaggle/` chỉ chứa đề; lời giải của các bài đó đặt trong `challenges/` cùng tên bài.
+`selfhost_kaggle/` chứa đề và `tools/` để dựng lại đề; lời giải của các bài đó đặt trong `challenges/` cùng tên bài.
 
 ## Tác giả từng phần
 
