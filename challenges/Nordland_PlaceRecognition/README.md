@@ -1,5 +1,7 @@
 # Lời giải CV0 - Nordland: nhận dạng địa điểm qua bốn mùa
 
+> **Lưu ý:** lời giải này viết cho bản đề giả định trước đây (ảnh đông tìm ảnh hè, ảnh 320x180, dung sai ±2 khung, thang 0-1). Đề trong `selfhost_kaggle/Nordland_PlaceRecognition/` đã được dựng lại theo văn bản chính thức (ảnh hè bị làm hỏng tìm ảnh đông, 640x360, ±10 khung, thang 0-100), nên dữ liệu và điểm ở đây không áp dụng cho đề hiện tại.
+
 Đề: [selfhost_kaggle/Nordland_PlaceRecognition](../../selfhost_kaggle/Nordland_PlaceRecognition/). Code: [train_fast.py](train_fast.py). Log lần chạy chính: [train_fast.log](train_fast.log).
 
 ## Kết quả
