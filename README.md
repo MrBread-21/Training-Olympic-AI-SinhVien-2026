@@ -11,7 +11,7 @@ luyen_tap/                         bài luyện theo chủ đề
 selfhost_kaggle/                   ĐỀ các cuộc thi đội tự host trên Kaggle                      MrBread
 ├── tools/                         script tải dữ liệu, dựng đề, kiểm tra metric, nén gói
 ├── metrics.py                     hàm chấm theo giao diện Kaggle Metric Notebook
-└── <11 bài>/                      đề, nội dung từng ô Kaggle, baseline
+└── <13 bài>/                      đề, nội dung từng ô Kaggle, baseline
 challenges/                        LỜI GIẢI                                                     MrBread
 ├── EuroSAT/  ImgCap/  VietnameseExtract/  CCTV_Street_Scence/  MSAD/    bài thi thử PHENIKAA
 └── Nordland_PlaceRecognition/     bài tự host trong selfhost_kaggle/
@@ -25,7 +25,7 @@ challenges/                        LỜI GIẢI                                 
 |---|---|---|
 | [`luyen_tap/CV/`](luyen_tap/CV/) | Bộ bài luyện code tay CV theo ngày | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 | [`luyen_tap/NLP/`](luyen_tap/NLP/) | Bộ 16 bài luyện NLP (8 nhóm dạng bài) | Hue ([@nguyenthithanhhue-13](https://github.com/nguyenthithanhhue-13)) |
-| [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 11 cuộc thi Kaggle tự host và script dựng đề | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
+| [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 13 cuộc thi Kaggle tự host và script dựng đề | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 | [`challenges/`](challenges/) | Lời giải 5 bài PHENIKAA và bài Nordland | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 
 Mỗi thành viên làm trên nhánh riêng ([`MrBread`](../../tree/MrBread), [`feature/hue`](../../tree/feature/hue)) rồi gộp vào `main`.
@@ -86,7 +86,7 @@ Xem thêm [`luyen_tap/CV/README.md`](luyen_tap/CV/README.md). Một số đề n
 
 ## Self-host Kaggle (`selfhost_kaggle/`) - MrBread
 
-Đề thi thử đội tự dựng và host dưới dạng cuộc thi **Kaggle Community** riêng tư, mô phỏng thể thức OlpAI: 6 tiếng, public và private test, tối đa 20 lần nộp, chọn 2 bài cuối, `main.py` chạy lại dưới 20 phút. Buổi đầu tiên: **26/11/2026**, 11 bài.
+Đề thi thử đội tự dựng và host dưới dạng cuộc thi **Kaggle Community** riêng tư, mô phỏng thể thức OlpAI: 6 tiếng, public và private test, tối đa 20 lần nộp, chọn 2 bài cuối, `main.py` chạy lại dưới 20 phút. Buổi đầu tiên: **26/11/2026**, 11 bài; thêm 2 bài DimABSA dựng lại đề NLP OlpAI'26.
 
 | Bài | Nội dung | Metric | Baseline (public) |
 |---|---|---|---|
@@ -101,6 +101,8 @@ Xem thêm [`luyen_tap/CV/README.md`](luyen_tap/CV/README.md). Một số đề n
 | [Vietnamese_Diacritics](selfhost_kaggle/Vietnamese_Diacritics/) | Thêm dấu tiếng Việt | Độ chính xác từ | 0.754 |
 | [IWSLT_EnVi_Translation](selfhost_kaggle/IWSLT_EnVi_Translation/) | Dịch Anh sang Việt, không pretrained | BLEU-4 | 2.32 |
 | [ViQuAD_PassageRetrieval](selfhost_kaggle/ViQuAD_PassageRetrieval/) | Tìm đoạn Wikipedia chứa câu trả lời | MRR@10 | 0.544 |
+| [DimABSA_VA](selfhost_kaggle/DimABSA_VA/) | Đề NLP OlpAI'26, Subtask 1: dự đoán (valence, arousal) cho từng khía cạnh cho trước | RMSE_VA (thấp hơn là tốt) | 1.901 |
+| [DimABSA_Quad](selfhost_kaggle/DimABSA_Quad/) | Đề NLP OlpAI'26, Subtask 2: trích bộ tứ (aspect, category, opinion, VA) | cF1 | 0.305 |
 
 Mỗi bài có `README.md` (đề), `KAGGLE.md` (nội dung tách sẵn từng ô khi tạo cuộc thi) và `baseline.py`. Cách host trên Kaggle: [`selfhost_kaggle/README.md`](selfhost_kaggle/README.md). Cách dựng lại dữ liệu và đáp án: [`selfhost_kaggle/tools/README.md`](selfhost_kaggle/tools/README.md).
 
