@@ -2,11 +2,14 @@
 
 Repo luyện tập của đội cho kỳ thi Olympic Trí tuệ nhân tạo sinh viên Việt Nam 2026 (OlpAI'26): bài luyện theo chủ đề, đề thi thử đội tự dựng và host trên Kaggle, và lời giải các bài thi thử. Mọi lời giải theo luật của kỳ thi: chỉ backbone ImageNet trong danh sách của BTC, không mô hình ngôn ngữ huấn luyện sẵn, chạy được trên GPU nhỏ trong thời gian giới hạn.
 
+**Bắt đầu ôn luyện từ [`on_tap/`](on_tap/)**: lộ trình đến chung kết, 16 bài học theo dạng bài, quy trình phòng thi, metric tự viết, và bảng nối mỗi dạng bài với bài luyện code tay, cuộc thi thử, lời giải tham khảo.
+
 ## Cấu trúc
 
 ```
+on_tap/                            GIÁO TRÌNH: lộ trình, quy trình phòng thi, metric, 16 bài học theo dạng bài   MrBread
 luyen_tap/                         bài luyện theo chủ đề
-├── CV/                            bộ bài luyện code tay CV theo ngày (20/11 đến 30/11)       MrBread
+├── CV/                            bộ bài luyện code tay theo ngày (20/11 đến 5/12)            MrBread
 └── NLP/                           bộ 16 bài luyện NLP                                         Hue
 selfhost_kaggle/                   ĐỀ các cuộc thi đội tự host trên Kaggle                      MrBread
 ├── tools/                         script tải dữ liệu, dựng đề, kiểm tra metric, nén gói
@@ -23,7 +26,8 @@ challenges/                        LỜI GIẢI                                 
 
 | Thư mục | Nội dung | Tác giả |
 |---|---|---|
-| [`luyen_tap/CV/`](luyen_tap/CV/) | Bộ bài luyện code tay CV theo ngày | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
+| [`on_tap/`](on_tap/) | Giáo trình ôn luyện: lộ trình, quy trình phòng thi, metric, 16 bài học theo dạng bài | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
+| [`luyen_tap/CV/`](luyen_tap/CV/) | Bộ bài luyện code tay theo ngày | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 | [`luyen_tap/NLP/`](luyen_tap/NLP/) | Bộ 16 bài luyện NLP (8 nhóm dạng bài) | Hue ([@nguyenthithanhhue-13](https://github.com/nguyenthithanhhue-13)) |
 | [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 19 cuộc thi Kaggle tự host và script dựng đề | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 | [`challenges/`](challenges/) | Lời giải 5 bài PHENIKAA và bài Nordland | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
