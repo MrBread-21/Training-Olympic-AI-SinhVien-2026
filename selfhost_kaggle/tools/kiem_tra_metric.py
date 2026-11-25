@@ -6,7 +6,11 @@ Ghi kèm <Bài>/host/nop_dung_het.csv để nộp thử trên Kaggle (Sandbox Su
     python tools/kiem_tra_metric.py Nordland_PlaceRecognition VSFC_Sentiment ...
 """
 import importlib.util
+import json
+import os
 import sys
+
+import numpy as np
 
 import pandas as pd
 
@@ -19,8 +23,22 @@ for b in sys.argv[1:]:
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
     sol = pd.read_csv(host / "solution.csv", dtype=str, keep_default_na=False)
     dung = sol.drop(columns=[c for c in ("Usage", "height", "width") if c in sol]).rename(columns=DOI_TEN)
-    if "label" in dung and b.startswith("MVTec"):
+    if "label" in dung and (b.startswith("MVTec") or b.startswith("HomeCredit")):
         dung = dung.rename(columns={"label": "score"})  # AUROC: nộp cột score
+    if b.startswith("ViQuAD_Extractive"):
+        dung = pd.DataFrame({"id": sol.id, "answer": [json.loads(a)[0] for a in sol.answers]})
+    if b.startswith("KTVIC"):  # nộp câu tham chiếu đầu tiên: điểm cao nhưng không tối đa (CIDEr so với cả 5 câu)
+        dung = pd.DataFrame({"id": sol.id, "caption": [json.loads(a)[0] for a in sol.captions]})
+    if b.startswith("Robot"):  # lời giải tối ưu tính lại bằng Dijkstra + quy hoạch động
+        os.environ.setdefault("SELFHOST_SEED", "0")
+        from xay_de_them import giai_toi_uu
+        dung = pd.DataFrame({"id": sol.id, "actions": [giai_toi_uu(g.split("/"))[1] for g in sol.grid]})
+    if b.startswith("CIFAR_Adv"):  # không có "đáp án đúng hết"; nộp ảnh gốc phải được 0, lệch 9 mức xám phải không hợp lệ
+        print(f"{b:28s} ảnh gốc: {mod.score(sol, sol.rename(columns={'orig': 'image'})[['id', 'image']], 'id'):.4f}", end="   ")
+        import base64
+        lech = [base64.b64encode(np.clip(np.frombuffer(base64.b64decode(s), np.uint8).astype(int) + 9, 0, 255).astype(np.uint8).tobytes()).decode() for s in sol.orig]
+        print(f"lệch 9 mức (không hợp lệ): {mod.score(sol, pd.DataFrame({'id': sol.id, 'image': lech}), 'id'):.4f}")
+        continue
     cot_id = "query_id" if "query_id" in sol.columns else "id"
     if cot_id == "query_id":  # Nordland: nộp một winter_id đúng cho mỗi query_id
         dung = pd.DataFrame({"query_id": sol.query_id, "winter_id": sol.positives.str.split().str[0]})

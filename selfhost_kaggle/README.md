@@ -29,13 +29,26 @@ Dựng lại đề NLP "Dimensional Aspect-Based Sentiment Analysis" của OlpAI
 | [DimABSA_VA](DimABSA_VA/) | Subtask 1: cho câu và khía cạnh, dự đoán (valence, arousal) thang 1-9 cho từng khía cạnh | RMSE_VA (thấp hơn là tốt) | 1.901 / 1.896 |
 | [DimABSA_Quad](DimABSA_Quad/) | Subtask 2: chỉ cho câu, trích mọi bộ tứ (aspect, category, opinion, VA) | cF1 (0-1) | 0.305 / 0.281 |
 
+## Các dạng bài bổ sung (tác giả đề: MrBread)
+
+Lấp các dạng bài có trong `ON_TAP.md` và đề OlpAI 2025 mà bộ đề trên chưa có. Mỗi bài đều có private test trong `private_test.zip` có mật khẩu, công bố ở tiếng cuối như thi thật.
+
+| Bài | Dạng bài | Nội dung | Metric | Baseline (public / private) |
+|---|---|---|---|---|
+| [ViQuAD_ExtractiveQA](ViQuAD_ExtractiveQA/) | Hỏi đáp trích xuất (kiểu VIQA) | Chép câu trả lời từ đoạn Wikipedia tiếng Việt, để trống nếu không có (khoảng 30%) | F1 theo từ | 0.276 / 0.337 |
+| [KTVIC_Captioning](KTVIC_Captioning/) | Sinh caption (chung kết 2025) | Một câu tiếng Việt mô tả ảnh đời sống | CIDEr-D | 0.196 / 0.217 |
+| [CIFAR_Adversarial](CIFAR_Adversarial/) | Tấn công đối kháng (chung kết 2025) | Sửa ảnh tối đa 8/255 để lừa mô hình A (công bố) và B (giấu kín) | Tỉ lệ lừa được | 0.809 / 0.808 |
+| [SpeechCommands_KWS](SpeechCommands_KWS/) | Âm thanh | 10 lệnh nói + unknown, test là người nói mới và có tạp âm | Macro-F1 | 0.377 / 0.346 |
+| [HomeCredit_Tabular](HomeCredit_Tabular/) | Dữ liệu bảng nhiều file | Dự đoán vỡ nợ, 3 bảng nối bằng id, test là các tháng sau | AUROC | 0.761 / 0.747 |
+| [Robot_PathPlanning](Robot_PathPlanning/) | Lập kế hoạch đường đi | Robot ghé mọi điểm mốc rồi về đích, chi phí địa hình nhỏ nhất | Chi phí tối ưu / chi phí nộp | 0.777 / 0.778 |
+
 Baseline là `baseline.py` trong từng bài, giống notebook mẫu BTC phát lúc thi; điểm của nó dùng làm Min_Score khi quy đổi.
 
 ## Mỗi bài gồm
 
 - `README.md`: đề (Overview, Evaluation, Data).
 - `KAGGLE.md`: nội dung tách sẵn theo từng ô khi tạo cuộc thi trên Kaggle (Title, URL, Subtitle, Overview, Description, Evaluation, Timeline, Rules, Citation, Dataset Description, Data license).
-- `baseline.py`: baseline chạy được ngay, ghi `submission.csv` (Nordland ghi `output.csv`; DimABSA ghi thêm `pred_test.jsonl` đúng định dạng đề).
+- `baseline.py` (kèm `baseline.ipynb`): baseline chạy được ngay, ghi `submission.csv` (Nordland ghi `output.csv`; DimABSA ghi thêm `pred_test.jsonl` đúng định dạng đề).
 
 Dữ liệu và đáp án (`solution.csv` có cột `Usage` chia Public/Private) không nằm trong repo vì dữ liệu thuộc giấy phép của bên thứ ba (đa số chỉ dùng phi thương mại). Dựng lại bằng [`tools/`](tools/): tải dữ liệu gốc, dựng đề, kiểm tra metric, chạy baseline, nén gói.
 
