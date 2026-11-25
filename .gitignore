@@ -12,6 +12,12 @@ submission*.csv
 # trừ các file nộp đã biết điểm LB, đặt trong thư mục submissions/
 !**/submissions/*.csv
 
-# luyen_tay: dữ liệu, đáp án và mô hình đều tạo lại bằng tao_du_lieu.py
-luyen_tay/**/data/
-luyen_tay/**/.dap_an/
+# luyen_tap: dữ liệu, đáp án và mô hình đều tạo lại bằng tao_du_lieu.py
+luyen_tap/**/data/
+luyen_tap/**/.dap_an/
+
+# selfhost_kaggle: dữ liệu, đáp án và gói zip không đưa lên repo (giấy phép bên thứ ba, đáp án)
+selfhost_kaggle/**/host/
+selfhost_kaggle/**/upload/
+selfhost_kaggle/**/raw/
+selfhost_kaggle/**/*_data.zip

@@ -1,5 +1,5 @@
 """Kiểm tra bộ bài: chép lời giải mẫu của mọi ngày ra file tạm, chấm, rồi xoá kết quả. Dùng sau khi sửa bộ chấm/dữ liệu.
-  python chung/chay_tat_ca.py            (từ thư mục luyen_tay)"""
+  python chung/chay_tat_ca.py            (từ thư mục luyen_tap/CV)"""
 import shutil, subprocess, sys, time
 from pathlib import Path
 

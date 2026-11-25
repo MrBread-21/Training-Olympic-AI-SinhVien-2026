@@ -12,7 +12,7 @@
 - **torchvision**: [Models and pre-trained weights](https://pytorch.org/vision/stable/models.html) (cách gọi `weights="DEFAULT"`, chuẩn hoá ImageNet).
 - **Quy trình**: A. Karpathy, [A Recipe for Training Neural Networks](http://karpathy.github.io/2019/04/25/recipe/) (đọc hết, ngắn).
 - **Bài báo**: He và cộng sự, *Deep Residual Learning* [arXiv:1512.03385](https://arxiv.org/abs/1512.03385), mục 3 (khối residual).
-- **Trong máy**: `../../ON_TAP.md` phần 1.1 và phần 3; `../../EuroSAT/solution.ipynb` (tầng 2a: vòng train có ETA).
+- **Trong máy**: `../../ON_TAP.md` phần 1.1 và phần 3; `../../../challenges/EuroSAT/solution.ipynb` (tầng 2a: vòng train có ETA).
 
 ## Bài 1 - Phân loại hình học
 

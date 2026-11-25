@@ -13,7 +13,7 @@
   - Dice loss: Milletari và cộng sự, V-Net [arXiv:1606.04797](https://arxiv.org/abs/1606.04797), mục 3 (công thức Dice mềm).
 - **Bộ dữ liệu tham khảo**: [MVTec AD](https://www.mvtec.com/company/research/datasets/mvtec-ad) (xem ảnh mẫu để hiểu bài toán).
 - **PyTorch / torchvision**: [torch.cdist](https://pytorch.org/docs/stable/generated/torch.cdist.html), [Feature extraction](https://pytorch.org/vision/stable/feature_extraction.html), [F.interpolate](https://pytorch.org/docs/stable/generated/torch.nn.functional.interpolate.html).
-- **Trong máy**: `../../ON_TAP.md` phần 1.8 (phát hiện bất thường); `../../CCTV_Street_Scence/solution.ipynb` (kNN patch, luôn kiểm tra chiều của điểm).
+- **Trong máy**: `../../ON_TAP.md` phần 1.8 (phát hiện bất thường); `../../../challenges/CCTV_Street_Scence/solution.ipynb` (kNN patch, luôn kiểm tra chiều của điểm).
 
 ## Phần A - Phát hiện ảnh lỗi chỉ từ ảnh bình thường (`bai_a.py`)
 

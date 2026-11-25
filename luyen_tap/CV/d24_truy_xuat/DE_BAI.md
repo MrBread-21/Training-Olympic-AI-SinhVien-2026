@@ -12,7 +12,7 @@
   - BNNeck: Luo và cộng sự, *Bag of Tricks and A Strong Baseline for Deep Person Re-identification* [arXiv:1903.07071](https://arxiv.org/abs/1903.07071), mục 3 (BatchNorm trước lớp phân loại, embedding chuẩn hoá).
   - Musgrave và cộng sự, *A Metric Learning Reality Check* [arXiv:2003.08505](https://arxiv.org/abs/2003.08505), mục 2-3 (đánh giá đúng: tách lớp train / test, Recall@K, MAP@R).
 - **PyTorch**: [torch.topk](https://pytorch.org/docs/stable/generated/torch.topk.html), [F.normalize](https://pytorch.org/docs/stable/generated/torch.nn.functional.normalize.html).
-- **Trong máy**: `../../MSAD/main.py` (docstring có phần thử GeM, VLAD, kNN truy hồi).
+- **Trong máy**: `../../../challenges/MSAD/main.py` (docstring có phần thử GeM, VLAD, kNN truy hồi).
 
 ## Bài 1 - Tìm ảnh cùng đối tượng
 

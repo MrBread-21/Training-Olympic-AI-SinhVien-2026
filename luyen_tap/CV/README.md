@@ -58,7 +58,7 @@ Bộ chấm tự kiểm tra các mục đánh dấu (tự động); các mục c
 ## Cấu trúc
 
 ```
-luyen_tay/
+luyen_tap/CV/
 ├── chung/cham.py          bộ chấm dùng chung (quy tắc code, chạy bài làm, đọc file nộp)
 ├── chung/hinh.py          sinh ảnh hình học giả lập cho các bài CV
 ├── chung/chay_tat_ca.py   chấm lời giải mẫu của mọi ngày (dùng khi sửa bộ chấm)
