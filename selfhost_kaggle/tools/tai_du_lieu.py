@@ -2,7 +2,7 @@
     python tools/tai_du_lieu.py              # tất cả
     python tools/tai_du_lieu.py nordland vsfc
 
-Tổng khoảng 24 GB, phần lớn là Nordland (2 mùa đông và hè, mỗi mùa khoảng 10-12 GB).
+Tổng khoảng 24 GB (DimABSA tải từ GitHub, 3 MB), phần lớn là Nordland (2 mùa đông và hè, mỗi mùa khoảng 10-12 GB).
 MVTec AD trên Hugging Face gồm hàng nghìn file nhỏ nên bị giới hạn tốc độ: chỉ tải 5 loại cần dùng, có thử lại.
 """
 import json
@@ -47,6 +47,21 @@ def nordland():
         print("  nordland", f, flush=True)
 
 
+DIMABSA = "https://raw.githubusercontent.com/DimABSA/DimABSA2026/bdc93be1224106ae7d3eb95739c02a76ed4ae8a1/"
+
+
+def dimabsa():
+    """DimABSA2026 (SemEval-2026 Task 3) Track A eng-restaurant, kèm bộ chấm chính thức để đối chiếu metric."""
+    import urllib.request
+    d = RAW / "dimabsa"
+    d.mkdir(parents=True, exist_ok=True)
+    for f in ["subtask_1/eng/eng_restaurant_train_alltasks.jsonl", "subtask_1/eng/eng_restaurant_dev_task1.jsonl",
+              "subtask_1/eng/eng_restaurant_test_task1.jsonl", "subtask_3/eng/eng_restaurant_dev_task3.jsonl",
+              "subtask_3/eng/eng_restaurant_test_task3.jsonl"]:
+        urllib.request.urlretrieve(DIMABSA + "task-dataset/track_a/" + f, d / f.split("/")[-1])
+    urllib.request.urlretrieve(DIMABSA + "evaluation_script/metrics_subtask_1_2_3.py", d / "metrics_official.py")
+
+
 def mvtec():
     d = RAW / "mvtec"
     tai("Voxel51/mvtec-ad", "samples.json", d)
@@ -60,13 +75,15 @@ def mvtec():
 
 
 if __name__ == "__main__":
-    ten = sys.argv[1:] or ["nordland", "mvtec", *DS]
+    ten = sys.argv[1:] or ["nordland", "mvtec", "dimabsa", *DS]
     for k in ten:
         t = time.time()
         if k == "nordland":
             nordland()
         elif k == "mvtec":
             mvtec()
+        elif k == "dimabsa":
+            dimabsa()
         else:
             repo, pats = DS[k]
             snapshot_download(repo, repo_type="dataset", local_dir=RAW / k, allow_patterns=pats, max_workers=4)

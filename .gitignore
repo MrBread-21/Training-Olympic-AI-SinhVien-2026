@@ -21,3 +21,5 @@ selfhost_kaggle/**/host/
 selfhost_kaggle/**/upload/
 selfhost_kaggle/**/raw/
 selfhost_kaggle/**/*_data.zip
+selfhost_kaggle/**/pred_test.jsonl
+selfhost_kaggle/**/output.csv
