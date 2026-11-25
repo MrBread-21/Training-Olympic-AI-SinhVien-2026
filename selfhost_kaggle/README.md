@@ -2,7 +2,7 @@
 
 Đề thi thử do đội tự dựng và host dưới dạng cuộc thi **Kaggle Community** riêng tư, mô phỏng thể thức OlpAI: 6 tiếng, có public và private test, giới hạn số lần nộp, chỉ backbone ImageNet, không mô hình ngôn ngữ huấn luyện sẵn.
 
-Thư mục này chỉ chứa **đề**. Lời giải nằm ở [`challenges/`](../challenges/).
+Thư mục này chứa **đề** và [`tools/`](tools/) để dựng lại đề. Lời giải nằm ở [`challenges/`](../challenges/) cùng tên bài.
 
 ## Buổi thi thử 26/11/2026 (tác giả đề: MrBread)
 
@@ -28,7 +28,7 @@ Baseline là `baseline.py` trong từng bài, giống notebook mẫu BTC phát l
 - `KAGGLE.md`: nội dung tách sẵn theo từng ô khi tạo cuộc thi trên Kaggle (Title, URL, Subtitle, Overview, Description, Evaluation, Timeline, Rules, Citation, Dataset Description, Data license).
 - `baseline.py`: baseline chạy được ngay, ghi `submission.csv`.
 
-Dữ liệu, đáp án (`solution.csv` có cột `Usage` chia Public/Private) và script dựng đề không nằm trong repo: dữ liệu thuộc giấy phép của bên thứ ba (đa số chỉ dùng phi thương mại), còn script dựng đề sinh lại được đáp án nên chỉ đưa lên sau buổi thi.
+Dữ liệu và đáp án (`solution.csv` có cột `Usage` chia Public/Private) không nằm trong repo vì dữ liệu thuộc giấy phép của bên thứ ba (đa số chỉ dùng phi thương mại). Dựng lại bằng [`tools/`](tools/): tải dữ liệu gốc, dựng đề, kiểm tra metric, chạy baseline, nén gói.
 
 ## Luật chung (giống vòng khu vực OlpAI'26)
 
