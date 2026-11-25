@@ -20,13 +20,22 @@ Thư mục này chứa **đề** và [`tools/`](tools/) để dựng lại đề
 | [IWSLT_EnVi_Translation](IWSLT_EnVi_Translation/) | Dịch Anh sang Việt (TED), không pretrained | BLEU-4 | 2.32 / 1.84 |
 | [ViQuAD_PassageRetrieval](ViQuAD_PassageRetrieval/) | Tìm đoạn Wikipedia chứa câu trả lời | MRR@10 | 0.544 / 0.558 |
 
+## Đề NLP OlpAI'26: DimABSA (tác giả đề: MrBread)
+
+Dựng lại đề NLP "Dimensional Aspect-Based Sentiment Analysis" của OlpAI'26 trên dữ liệu công khai DimABSA2026 (tiếng Anh, review nhà hàng). Hai subtask độc lập nên tách thành hai cuộc thi Kaggle, mỗi cuộc thi một metric.
+
+| Bài | Nội dung | Metric | Baseline (public / private) |
+|---|---|---|---|
+| [DimABSA_VA](DimABSA_VA/) | Subtask 1: cho câu và khía cạnh, dự đoán (valence, arousal) thang 1-9 cho từng khía cạnh | RMSE_VA (thấp hơn là tốt) | 1.901 / 1.896 |
+| [DimABSA_Quad](DimABSA_Quad/) | Subtask 2: chỉ cho câu, trích mọi bộ tứ (aspect, category, opinion, VA) | cF1 (0-1) | 0.305 / 0.281 |
+
 Baseline là `baseline.py` trong từng bài, giống notebook mẫu BTC phát lúc thi; điểm của nó dùng làm Min_Score khi quy đổi.
 
 ## Mỗi bài gồm
 
 - `README.md`: đề (Overview, Evaluation, Data).
 - `KAGGLE.md`: nội dung tách sẵn theo từng ô khi tạo cuộc thi trên Kaggle (Title, URL, Subtitle, Overview, Description, Evaluation, Timeline, Rules, Citation, Dataset Description, Data license).
-- `baseline.py`: baseline chạy được ngay, ghi `submission.csv`.
+- `baseline.py`: baseline chạy được ngay, ghi `submission.csv` (Nordland ghi `output.csv`; DimABSA ghi thêm `pred_test.jsonl` đúng định dạng đề).
 
 Dữ liệu và đáp án (`solution.csv` có cột `Usage` chia Public/Private) không nằm trong repo vì dữ liệu thuộc giấy phép của bên thứ ba (đa số chỉ dùng phi thương mại). Dựng lại bằng [`tools/`](tools/): tải dữ liệu gốc, dựng đề, kiểm tra metric, chạy baseline, nén gói.
 

@@ -34,6 +34,14 @@ for b in sys.argv[1:]:
         lap = pd.concat([dung.assign(winter_id="w_000000"), dung])
         print(f"   bỏ nửa số dòng: {thieu:.2f}   sai tên cột: {sai_cot:.2f}   dòng đầu sai rồi lặp dòng đúng: {mod.score(pub, lap, cot_id):.2f}")
         continue
+    if b.startswith("DimABSA"):  # thiếu câu không báo lỗi: thiếu khía cạnh bị tính sai số lớn nhất, thiếu bộ tứ tính bỏ sót
+        nua = dung[dung[cot_id].isin(pub[cot_id])].iloc[::2]
+        print(f"   bỏ nửa số câu public: {mod.score(pub, nua, cot_id):.4f}   sai tên cột: ", end="")
+        try:
+            mod.score(pub, dung.rename(columns={dung.columns[1]: "x"}), cot_id); print("LỖI: không báo")
+        except mod.ParticipantVisibleError as e:
+            print("báo lỗi:", e)
+        continue
     try:
         mod.score(pub, dung.iloc[:-5], cot_id)
         print("   LỖI: thiếu dòng mà không báo")

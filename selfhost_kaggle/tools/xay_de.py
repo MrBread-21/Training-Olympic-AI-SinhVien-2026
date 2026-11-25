@@ -1,4 +1,4 @@
-"""Dựng gói đề cho từng bài.  SELFHOST_SEED=<số bí mật> python tools/xay_de.py cv0 cv1 ... nlp5   (không đối số = tất cả)
+"""Dựng gói đề cho từng bài.  SELFHOST_SEED=<số bí mật> python tools/xay_de.py cv0 cv1 ... nlp7   (không đối số = tất cả)
 Mỗi bài: <Bài>/upload (đưa lên Kaggle làm Data), <Bài>/host (solution.csv, metric.py; KHÔNG đưa cho thí sinh).
 
 Seed quyết định id ngẫu nhiên, cách chia Public/Private, nhãn nhiễu và ảnh bị làm hỏng, nên chính là "chìa khoá" của đáp án:
@@ -353,8 +353,93 @@ def nlp5():
     print(f"  corpus {len(ctx)} đoạn, train {len(tr)} câu hỏi, test {len(te)} câu hỏi")
 
 
+# ======================================================================== NLP6, NLP7 DimABSA (đề NLP OlpAI'26)
+# Đề thật: tiếng Việt, dữ liệu không công bố. Bản này dùng dữ liệu công khai SemEval-2026 Task 3 (DimABSA2026,
+# Track A, eng-restaurant), đổi tên trường sang đúng định dạng đề (id, text, aspects / quadruplets, valence, arousal).
+def _dimabsa_doc(ten):
+    import json
+    d = Path(os.environ.get("SELFHOST_DIMABSA", RAW / "dimabsa"))
+    return [json.loads(l) for l in open(d / ten, encoding="utf-8") if l.strip()]
+
+
+def _va(s):
+    v, a = s.split("#")
+    return float(v), float(a)
+
+
+def _dimabsa_goi(bai, khoa, train, dev, test, cot_nop, mau_rong):
+    """Ghi gói chung cho hai subtask. test: list (đầu vào cho thí sinh, đáp án). Nửa đầu sau khi xáo là public
+    (test.jsonl), nửa sau là private (private_test.zip có mật khẩu, giải nén ra private_test.jsonl)."""
+    import hashlib
+    import json
+    up, host = thu_muc(bai)
+    rng = np.random.default_rng(SEED)
+    ghi = lambda rows: "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
+    for ten, rows in [("train", train), ("dev", dev)]:
+        (up / f"{ten}.jsonl").write_text(ghi(rows), encoding="utf-8")
+    test = [test[i] for i in rng.permutation(len(test))]
+    n_pub = len(test) // 2
+    pub, prv = test[:n_pub], test[n_pub:]
+    for j, (x, _) in enumerate(pub):
+        x["id"] = f"PUB_{j + 1:04d}"
+    for j, (x, _) in enumerate(prv):
+        x["id"] = f"PRV_{j + 1:04d}"
+    (up / "test.jsonl").write_text(ghi([x for x, _ in pub]), encoding="utf-8")
+    mk = hashlib.sha256(f"{khoa}-{SEED}".encode()).hexdigest()[:10]
+    zip_mat_khau(up / "private_test.zip", [("private_test.jsonl", ghi([x for x, _ in prv]).encode("utf-8"))], mk)
+    (host / "mat_khau_private_test.txt").write_text(mk + "\n", encoding="utf-8")
+    sol = pd.DataFrame([(x["id"], json.dumps(y, ensure_ascii=False), "Public" if x["id"].startswith("PUB") else "Private")
+                        for x, y in pub + prv], columns=["id", cot_nop, "Usage"])
+    sample = pd.DataFrame({"id": sol.id, cot_nop: [json.dumps(mau_rong(x), ensure_ascii=False) for x, _ in pub + prv]})
+    (up / "LICENSE-DATASET.txt").write_text(
+        "Dữ liệu DimABSA2026 (SemEval-2026 Task 3, Track A, eng-restaurant), github.com/DimABSA/DimABSA2026, commit bdc93be.\n"
+        "Kho gốc không ghi giấy phép: chỉ dùng để luyện tập nội bộ, không phát tán lại, ghi nguồn khi trích dẫn.\n", encoding="utf-8")
+    ghi_goi(up, host, sol, sample, "rmse_va" if cot_nop == "aspects" else "continuous_f1")
+    print(f"  train {len(train)} câu, dev {len(dev)}, test public {len(pub)} / private {len(prv)}; mật khẩu ở host/mat_khau_private_test.txt")
+
+
+def nlp6():
+    """Subtask 1: cho câu và các khía cạnh, dự đoán (valence, arousal) cho từng khía cạnh."""
+    def cap(rows, k_va="Aspect_VA"):
+        out = []
+        for j, r in enumerate(rows):
+            asp = [{"aspect": q["Aspect"], "valence": _va(q["VA"])[0], "arousal": _va(q["VA"])[1]}
+                   for q in r[k_va] if q["Aspect"] != "NULL"]
+            if asp:
+                out.append({"id": "", "text": r["Text"], "aspects": asp})
+        return out
+
+    train = cap(_dimabsa_doc("eng_restaurant_train_alltasks.jsonl"), "Quadruplet")
+    for j, r in enumerate(train):
+        r["id"] = f"TRAIN_{j + 1:04d}"
+    dev = cap(_dimabsa_doc("eng_restaurant_dev_task1.jsonl"))
+    for j, r in enumerate(dev):
+        r["id"] = f"DEV_{j + 1:04d}"
+    test = [({"id": "", "text": r["text"], "aspects": [{"term": a["aspect"]} for a in r["aspects"]]}, r["aspects"])
+            for r in cap(_dimabsa_doc("eng_restaurant_test_task1.jsonl"))]
+    mau = lambda x: [{"aspect": a["term"], "valence": 5.0, "arousal": 5.0} for a in x["aspects"]]
+    _dimabsa_goi("DimABSA_VA", "dimabsa-va", train, dev, test, "aspects", mau)
+
+
+def nlp7():
+    """Subtask 2: chỉ cho câu, trích tập bộ tứ (aspect, category, opinion, valence, arousal)."""
+    def cap(rows):
+        return [{"id": "", "text": r["Text"], "quadruplets": [
+            {"aspect": q["Aspect"], "category": q["Category"], "opinion": q["Opinion"],
+             "valence": _va(q["VA"])[0], "arousal": _va(q["VA"])[1]} for q in r["Quadruplet"]]} for r in rows]
+
+    train = cap(_dimabsa_doc("eng_restaurant_train_alltasks.jsonl"))
+    for j, r in enumerate(train):
+        r["id"] = f"TRAIN_{j + 1:04d}"
+    dev = cap(_dimabsa_doc("eng_restaurant_dev_task3.jsonl"))
+    for j, r in enumerate(dev):
+        r["id"] = f"DEV_{j + 1:04d}"
+    test = [({"id": "", "text": r["text"]}, r["quadruplets"]) for r in cap(_dimabsa_doc("eng_restaurant_test_task3.jsonl"))]
+    _dimabsa_goi("DimABSA_Quad", "dimabsa-quad", train, dev, test, "quadruplets", lambda x: [])
+
+
 if __name__ == "__main__":
-    bai = sys.argv[1:] or ["cv0", "cv1", "cv2", "cv3", "cv4", "cv5", "nlp1", "nlp2", "nlp3", "nlp4", "nlp5"]
+    bai = sys.argv[1:] or ["cv0", "cv1", "cv2", "cv3", "cv4", "cv5", "nlp1", "nlp2", "nlp3", "nlp4", "nlp5", "nlp6", "nlp7"]
     for b in bai:
         print(b, flush=True)
         globals()[b]()

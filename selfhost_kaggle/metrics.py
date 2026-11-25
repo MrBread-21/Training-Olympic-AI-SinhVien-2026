@@ -202,3 +202,91 @@ def bleu4(solution, submission, row_id_column_name):
         return 0.0
     bp = 1.0 if c > r else math.exp(1 - r / c)
     return float(100 * bp * math.exp(sum(math.log(k / t) for k, t in zip(khop, tong)) / 4))
+
+
+# ---------------------------------------------------------------- DimABSA (đề NLP OlpAI'26)
+def rmse_va(solution, submission, row_id_column_name):
+    """DimABSA Subtask 1 (hồi quy Valence-Arousal cho khía cạnh cho trước). Thấp hơn là tốt hơn.
+    Đáp án: id, aspects (JSON: [{"aspect", "valence", "arousal"}]). File nộp: id, aspects (JSON cùng dạng).
+    RMSE_VA = sqrt(1/N x tổng [(Vp - Vg)^2 + (Ap - Ag)^2]) trên mọi cặp (câu, khía cạnh) của đáp án.
+    Dự đoán khớp với khía cạnh theo đúng chuỗi aspect. Khía cạnh không có dự đoán, giá trị không đọc được
+    hoặc nằm ngoài [1, 9] bị tính sai số lớn nhất có thể (xa nhất về biên 1 hoặc 9 trên mỗi chiều)."""
+    import json
+    sol = solution.drop(columns=["Usage"], errors="ignore")
+    for c in (row_id_column_name, "aspects"):
+        if c not in submission.columns:
+            raise ParticipantVisibleError(f"Thiếu cột {c}")
+    nop = {}
+    for i, s in zip(submission[row_id_column_name].astype(str), submission["aspects"]):
+        if i in nop:
+            continue  # id lặp: chỉ lấy dòng đầu
+        try:
+            ds = json.loads(_chuoi(s) or "[]")
+            nop[i] = {str(d["aspect"]): d for d in ds if isinstance(d, dict) and "aspect" in d}
+        except (ValueError, TypeError):
+            nop[i] = {}
+    tong, n = 0.0, 0
+    for i, s in zip(sol[row_id_column_name].astype(str), sol["aspects"]):
+        p = nop.get(i, {})
+        for g in json.loads(s):
+            d = 0.0
+            for k in ("valence", "arousal"):
+                gv = float(g[k])
+                try:
+                    pv = float(p[g["aspect"]][k])
+                    ok = 1.0 <= pv <= 9.0
+                except (KeyError, ValueError, TypeError):
+                    ok = False
+                d += (pv - gv) ** 2 if ok else max(gv - 1.0, 9.0 - gv) ** 2
+            tong += d; n += 1
+    return float(math.sqrt(tong / n))
+
+
+def continuous_f1(solution, submission, row_id_column_name):
+    """DimABSA Subtask 2 (trích bộ tứ aspect, category, opinion, VA). Điểm cF1 thang 0-1, giống bộ chấm chính thức.
+    Đáp án: id, quadruplets (JSON: [{"aspect", "category", "opinion", "valence", "arousal"}]). File nộp: id, quadruplets.
+    Một dự đoán khớp nhãn chuẩn khi (aspect, category, opinion) trùng khớp sau khi chuyển chữ thường; khi khớp,
+    cTP = max(0, 1 - khoảng cách Euclid VA / sqrt(128)), VA ngoài [1, 9] cho cTP = 0.
+    Nhãn chuẩn khớp với nhiều dự đoán trùng nhau: cTP = 0, tính bỏ sót. cPrecision = tổng cTP / (TP + FP),
+    cRecall = tổng cTP / (TP + FN), cF1 là trung bình điều hoà. Câu không có dòng nộp coi như không dự đoán gì."""
+    import json
+    sol = solution.drop(columns=["Usage"], errors="ignore")
+    for c in (row_id_column_name, "quadruplets"):
+        if c not in submission.columns:
+            raise ParticipantVisibleError(f"Thiếu cột {c}")
+
+    def doc(s):
+        try:
+            ds = json.loads(_chuoi(s) or "[]")
+        except ValueError:
+            return []
+        out = []
+        for d in ds if isinstance(ds, list) else []:
+            try:
+                out.append(((str(d["aspect"]).lower(), str(d["category"]).lower(), str(d["opinion"]).lower()),
+                            float(d["valence"]), float(d["arousal"])))
+            except (KeyError, ValueError, TypeError):
+                out.append((None, 0.0, 0.0))  # bộ tứ hỏng: chỉ tính là dự đoán sai
+        return out
+
+    nop = {}
+    for i, s in zip(submission[row_id_column_name].astype(str), submission["quadruplets"]):
+        nop.setdefault(i, doc(s))
+    ctp, tp, fp, fn = 0.0, 0, 0, 0
+    for i, s in zip(sol[row_id_column_name].astype(str), sol["quadruplets"]):
+        gold, pred = doc(s), nop.get(i, [])
+        khop = 0
+        for k, gv, ga in gold:
+            diem = []
+            for kp, pv, pa in pred:
+                if kp == k:
+                    ok = 1 <= pv <= 9 and 1 <= pa <= 9
+                    diem.append(max(0.0, 1 - math.hypot(pv - gv, pa - ga) / math.sqrt(128)) if ok else 0.0)
+            if len(diem) == 1:
+                khop += 1; tp += 1; ctp += diem[0]
+            else:
+                fn += 1
+        fp += len(pred) - khop
+    p = ctp / (tp + fp) if tp + fp else 0.0
+    r = ctp / (tp + fn) if tp + fn else 0.0
+    return float(2 * p * r / (p + r)) if p + r else 0.0
