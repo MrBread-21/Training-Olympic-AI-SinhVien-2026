@@ -8,12 +8,13 @@ Repo luyện tập của đội cho kỳ thi Olympic Trí tuệ nhân tạo sinh
 luyen_tap/                  bài luyện tập theo chủ đề
 ├── CV/                     bộ bài luyện code tay CV theo ngày          (MrBread)
 └── NLP/                    bộ 16 bài luyện NLP                         (Hue)
-challenges/                 lời giải các bài thi thử PHENIKAA AI Hackathon (MrBread)
+challenges/                 lời giải: 5 bài thi thử PHENIKAA AI Hackathon và các bài tự host (MrBread)
 ├── EuroSAT/
 ├── ImgCap/
 ├── VietnameseExtract/
 ├── CCTV_Street_Scence/
-└── MSAD/
+├── MSAD/
+└── Nordland_PlaceRecognition/  lời giải bài tự host cùng tên trong selfhost_kaggle/
 selfhost_kaggle/            đề các cuộc thi đội tự host trên Kaggle      (MrBread)
 ├── Nordland_PlaceRecognition/   FGVC_Aircraft_Noisy/   Kvasir_PolypSegmentation/
 ├── MVTec_AnomalyDetection/      UCF101_ActionRecognition/   VOC_MultiLabel/
@@ -33,7 +34,8 @@ selfhost_kaggle/            đề các cuộc thi đội tự host trên Kaggle 
 | [`challenges/VietnameseExtract/`](challenges/VietnameseExtract/) | Hỏi đáp trích xuất tiếng Việt | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
 | [`challenges/CCTV_Street_Scence/`](challenges/CCTV_Street_Scence/) | Bất thường trong video giám sát | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
 | [`challenges/MSAD/`](challenges/MSAD/) | Phân loại và định vị sự kiện bất thường | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | [`MrBread`](../../tree/MrBread) |
-| [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 11 cuộc thi Kaggle tự host (6 CV, 5 NLP) cho buổi thi thử 26/11 | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | `main` |
+| [`challenges/Nordland_PlaceRecognition/`](challenges/Nordland_PlaceRecognition/) | Nhận dạng địa điểm đông-hè (lời giải bài tự host) | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | `main` |
+| [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 11 cuộc thi Kaggle tự host (6 CV, 5 NLP) cho buổi thi thử 26/11 và script dựng đề | MrBread ([@MrBread-21](https://github.com/MrBread-21)) | `main` |
 
 ---
 
