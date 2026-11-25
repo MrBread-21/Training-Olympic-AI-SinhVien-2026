@@ -1,4 +1,4 @@
-# Luyện code tay - chung kết OlpAI'26 (20/11 đến 30/11)
+# Luyện code tay - chung kết OlpAI'26 (20/11 đến 5/12)
 
 Mỗi ngày một khung code cần thuộc, luyện theo điều kiện phòng thi: **đóng tài liệu, không LLM, bấm giờ**. Mỗi bài có dữ liệu giả lập tạo bằng script (chạy CPU dưới 2 phút), bộ chấm tự động, và lời giải mẫu tối đa 80 dòng để đối chiếu sau khi làm.
 
@@ -26,8 +26,15 @@ Mỗi ngày một khung code cần thuộc, luyện theo điều kiện phòng t
 | 28/11 | `d28_nlp` | NFC, tokenize, vocab, bucketing; TF-IDF từ + ký tự + logistic; TextCNN; BM25 + Recall@1 | ≤ 50 phút | F1 ≥ 0.87 / 0.85, R@1 ≥ 0.85 (quên NFC: 0.80) | 0.91 / 0.90 / 0.93 |
 | 29/11 | `d29_seq2seq` | nn.Transformer từ đầu, mặt nạ, teacher forcing, greedy + beam, BLEU / chrF | ≤ 50 phút | BLEU ≥ 0.90 | 0.99 |
 | 30/11 | `d30_du_lieu_bang` | ColumnTransformer, encoding, HistGradientBoosting, OOF, stacking | ≤ 35 phút | AUROC ≥ 0.73 (logistic một mình: 0.70) | 0.75 |
+| 1/12 | `d01_am_thanh` | wav, log-mel tự tính bằng `torch.stft`, CNN 2D, trộn tạp âm theo SNR, SpecAugment, val theo người nói | ≤ 50 phút | macro-F1 ≥ 0.85 (không trộn tạp âm: 0.35) | 0.92 |
+| 2/12 | `d02_caption` | A: CNN học "từ khái niệm" + truy hồi K láng giềng + MBR; B: encoder CNN + decoder GRU, teacher forcing, greedy | ≤ 70 phút | CIDEr-D ≥ 3.6 / 4.5 (truy hồi bằng pixel: 2.63) | 4.27 / 4.82 |
+| 3/12 | `d03_hoi_dap` | NFC, chọn câu, sinh span, đặc trưng span, XGBoost xếp hạng, val theo đoạn văn, ngưỡng để trống | ≤ 60 phút | F1 ≥ 0.80 (quên NFC: 0.60) | 0.88 |
+| 4/12 | `d04_dimabsa` | A: mệnh đề chứa khía cạnh + TF-IDF + Ridge (RMSE_VA); B: BIO BiLSTM + ký tự, ghép cặp, category, VA (cF1) | ≤ 75 phút | RMSE_VA ≤ 0.70, cF1 ≥ 0.70 (tra từ điển: 0.57) | 0.50 / 0.79 |
+| 5/12 | `d05_duong_di` | A: Dijkstra + Held-Karp; B: value iteration trên gridworld trơn trượt | ≤ 45 phút | 0.99 / 0.97 (BFS tham lam 0.79; bỏ qua trượt 0.93) | 1.00 / 1.00 |
 
-Mục tiêu thời gian là thời gian **viết + chạy** đến khi bộ chấm báo đạt. Lời giải mẫu chạy trên GTX 1650 4 GB (fp32) mỗi bài dưới 3 phút.
+Mục tiêu thời gian là thời gian **viết + chạy** đến khi bộ chấm báo đạt. Lời giải mẫu chạy trên GTX 1650 4 GB (fp32) mỗi bài dưới 3 phút (d02 khoảng 4 phút mỗi phần).
+
+Bài học lý thuyết đi kèm từng ngày nằm ở [`on_tap/dang_bai/`](../../on_tap/dang_bai/); lộ trình tổng ở [`on_tap/README.md`](../../on_tap/README.md).
 
 ## Quy tắc trong mọi bài làm
 
