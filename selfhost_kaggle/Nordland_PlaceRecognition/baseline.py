@@ -1,5 +1,13 @@
-"""Baseline Nordland: ảnh thu nhỏ 64x32 xám, chuẩn hoá từng ô, so khớp láng giềng gần nhất (cosine).
-Không học gì; là mức điểm tối thiểu.  Chạy: python baseline.py [thư_mục_dữ_liệu]  -> submission.csv"""
+# %% [markdown]
+# # Baseline - Định vị tàu hoả bốn mùa
+#
+# Không học gì: thu mỗi ảnh về 64x32 xám, chuẩn hoá từng ô 8x8, so cosine giữa ảnh mùa hè cần định vị và kho ảnh mùa đông,
+# lấy ảnh mùa đông giống nhất. Notebook: tự chấm Recall@1 trên validation, rồi ghi `output.csv` (`query_id,winter_id`).
+#
+# Chạy: `python baseline.py [thư_mục_dữ_liệu]`. Trên Kaggle tự tìm dữ liệu trong `/kaggle/input`.
+# Muốn dự đoán cả private test: giải nén `private_test.zip` (mật khẩu công bố ở tiếng cuối) vào thư mục làm việc trước khi chạy.
+
+# %%
 import sys
 from pathlib import Path
 
@@ -7,7 +15,13 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-D = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
+np.random.seed(42)
+if len(sys.argv) > 1 and Path(sys.argv[1]).is_dir():
+    D = Path(sys.argv[1])
+else:
+    tim = sorted(Path("/kaggle/input").rglob("train_summer.csv")) if Path("/kaggle/input").exists() else []
+    D = tim[0].parent if tim else Path(".")
+print("dữ liệu:", D)
 
 
 def vec(p):
@@ -18,9 +32,31 @@ def vec(p):
     return v / np.linalg.norm(v)
 
 
-q = pd.read_csv(D / "query.csv"); db = pd.read_csv(D / "database.csv")
-Q = np.stack([vec(D / f"test/query/{i}.jpg") for i in q.id])
-B = np.stack([vec(D / f"test/database/{i}.jpg") for i in db.id])
-top = np.argsort(-(Q @ B.T), axis=1)[:, :10]
-pd.DataFrame({"id": q.id, "predictions": [" ".join(db.id.values[t]) for t in top]}).to_csv("submission.csv", index=False)
-print("xong", len(q))
+def dinh_vi(q_paths, d_paths):
+    """Trả về chỉ số ảnh mùa đông giống nhất cho từng ảnh mùa hè."""
+    Q = np.stack([vec(p) for p in q_paths]); B = np.stack([vec(p) for p in d_paths])
+    return (Q @ B.T).argmax(1)
+
+
+# %% [markdown]
+# ## Tự chấm trên validation (đúng nếu lệch tối đa 10 khung)
+
+# %%
+vs, vw = pd.read_csv(D / "validation_summer.csv"), pd.read_csv(D / "validation_winter.csv")
+best = dinh_vi([D / f"validation/summer/{i}.jpg" for i in vs.summer_id], [D / f"validation/winter/{i}.jpg" for i in vw.winter_id])
+lech = np.abs(vw.position.values[best] - vs.position.values)
+print(f"validation Recall@1 = {100 * (lech <= 10).mean():.2f}")
+
+# %% [markdown]
+# ## Dự đoán test: test/queries (public) và private_test/queries (nếu đã giải nén)
+
+# %%
+db = sorted(p.stem for p in (D / "test/database").glob("*.jpg"))
+q_paths = sorted((D / "test/queries").glob("*.jpg"))
+for thu in [Path("private_test/queries"), D / "private_test/queries"]:
+    if thu.is_dir():
+        q_paths += sorted(thu.glob("*.jpg")); break
+best = dinh_vi(q_paths, [D / f"test/database/{i}.jpg" for i in db])
+out = pd.DataFrame({"query_id": [p.stem for p in q_paths], "winter_id": np.array(db)[best]})
+out.to_csv("output.csv", index=False)
+print(f"ghi output.csv: {len(out)} ảnh mùa hè")
