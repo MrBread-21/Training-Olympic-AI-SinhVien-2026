@@ -121,6 +121,20 @@ def _recall(solution, submission, row_id_column_name, k):
     return float(np.mean(ok))
 
 
+def recall_at_1_vpr(solution, submission, row_id_column_name):
+    """Định vị tàu hoả bốn mùa (OlpAI'26). Đáp án: query_id, positives (các winter_id lệch tối đa 10 khung, cách nhau dấu cách).
+    File nộp: query_id, winter_id (đúng một ảnh mùa đông cho mỗi ảnh mùa hè). Điểm = Recall@1 x 100, thang 0-100.
+    Luật chấm như đề: query_id lặp thì chỉ chấm dòng đầu; dòng có query_id lạ bị bỏ qua; ảnh không có dòng nào
+    hoặc winter_id không thuộc kho tính là sai; thiếu cột hoặc sai tên cột được 0 điểm."""
+    sol = solution.drop(columns=["Usage"], errors="ignore")
+    if row_id_column_name not in submission.columns or "winter_id" not in submission.columns:
+        return 0.0
+    sub = submission.astype({row_id_column_name: str}).drop_duplicates(row_id_column_name, keep="first")
+    du_doan = dict(zip(sub[row_id_column_name], sub["winter_id"].map(_chuoi).str.strip()))
+    dung = [du_doan.get(str(q), "") in set(_chuoi(p).split()) for q, p in zip(sol[row_id_column_name], sol["positives"])]
+    return float(100 * np.mean(dung))
+
+
 def mrr_at_10(solution, submission, row_id_column_name):
     """Đáp án: passage_id (một đoạn đúng). File nộp: passage_ids (tối đa 10, xếp từ khớp nhất). MRR@10."""
     m = _ghep(solution, submission, row_id_column_name, ["passage_ids"])
