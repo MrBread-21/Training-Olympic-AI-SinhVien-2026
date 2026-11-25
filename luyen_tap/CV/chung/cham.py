@@ -94,6 +94,11 @@ def chay(B, path, timeout_phut):
         B.ok(False, f"chạy xong trong {timeout_phut} phút")
         B.ket_thuc()
     phut = (time.time() - t0) / 60
+    if r.returncode & 0xFFFFFFFF == 0xC0000409 and not r.stderr.strip():
+        # Windows: một số tổ hợp torch (RNN) + numpy làm tiến trình crash lúc giải phóng DLL khi thoát, sau khi đã chạy xong.
+        # Máy thi Linux không gặp. Chấm tiếp file nộp, chỉ cảnh báo.
+        B.ok(False, f"chạy xong ({phut:.1f} phút) nhưng Windows báo lỗi 0xC0000409 lúc thoát (lỗi DLL của torch), vẫn chấm file nộp", canh_bao=True)
+        return phut
     if r.returncode != 0:
         print("\n".join(r.stderr.strip().splitlines()[-15:]))
     B.ok(r.returncode == 0, f"chạy không lỗi ({phut:.1f} phút)")
