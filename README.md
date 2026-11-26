@@ -60,6 +60,11 @@ Mỗi ngày một khung code cần thuộc, luyện theo điều kiện phòng t
 | 28/11 | `d28_nlp` | NFC, vocab, bucketing; TF-IDF + logistic; TextCNN; BM25 | F1 ≥ 0.87 / 0.85, Recall@1 ≥ 0.85 | 0.91 / 0.90 / 0.93 |
 | 29/11 | `d29_seq2seq` | nn.Transformer từ đầu, mặt nạ, greedy + beam, BLEU / chrF | BLEU ≥ 0.90 | 0.99 |
 | 30/11 | `d30_du_lieu_bang` | ColumnTransformer, encoding, HistGradientBoosting, stacking OOF | AUROC ≥ 0.73 | 0.75 |
+| 1/12 | `d01_am_thanh` | wav, log-mel tự tính bằng `torch.stft`, CNN, trộn tạp âm theo SNR, SpecAugment | macro-F1 ≥ 0.85 | 0.92 |
+| 2/12 | `d02_caption` | CNN học từ khái niệm + truy hồi + MBR; encoder CNN + decoder GRU | CIDEr-D ≥ 3.6 / 4.5 | 4.27 / 4.82 |
+| 3/12 | `d03_hoi_dap` | NFC, chọn câu, sinh span, XGBoost xếp hạng, ngưỡng để trống | F1 ≥ 0.80 | 0.88 |
+| 4/12 | `d04_dimabsa` | Mệnh đề + Ridge cho VA; BIO BiLSTM + ghép cặp cho bộ tứ | RMSE_VA ≤ 0.70, cF1 ≥ 0.70 | 0.50 / 0.79 |
+| 5/12 | `d05_duong_di` | Dijkstra + Held-Karp; value iteration gridworld trơn trượt | 0.99 / 0.97 | 1.00 / 1.00 |
 
 Trọng tâm là CV; ba ngày cuối (NLP, seq2seq, dữ liệu bảng) là phần bổ trợ để không bị bất ngờ nếu đề ra ngoài CV. Ngưỡng được đặt để tách cách làm đúng khỏi cách làm sơ sài, ví dụ: giữ nguyên khung bài 21 cho bài 22 chỉ được 0.82, quên chuẩn hoá NFC ở bài 28 chỉ được 0.80, chỉ dùng FGSM ở bài 25 chỉ được 0.42.
 
