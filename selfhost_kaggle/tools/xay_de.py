@@ -98,9 +98,9 @@ def cv0():
     private_files.sort()
     zip_mat_khau(up / "private_test.zip", private_files, mk)
     (host / "mat_khau_private_test.txt").write_text(mk + "\n", encoding="utf-8")
-    sol = pd.DataFrame(sol_rows, columns=["query_id", "positives", "Usage"]).sample(frac=1, random_state=SEED).reset_index(drop=True)
+    sol = pd.DataFrame(sol_rows, columns=["id", "positives", "Usage"]).sample(frac=1, random_state=SEED).reset_index(drop=True)
     db = sorted(p.stem for p in (up / "test/database").glob("*.jpg"))
-    sample = pd.DataFrame({"query_id": sol.query_id, "winter_id": rng.choice(db, len(sol))})
+    sample = pd.DataFrame({"id": sol.id, "winter_id": rng.choice(db, len(sol))})
     (up / "LICENSE-DATASET.txt").write_text(
         "Nordland dataset (NRK, Sünderhauf và cộng sự 2013), bản trên Hugging Face Somayeh-h/Nordland.\n"
         "Giấy phép CC BY-NC-SA 4.0: chỉ dùng phi thương mại, ghi nguồn, chia sẻ cùng giấy phép.\n", encoding="utf-8")

@@ -1,6 +1,6 @@
 # Định vị tàu hoả bốn mùa (Nordland Visual Place Recognition)
 
-Dựng lại **tác vụ 2 vòng sơ loại OlpAI'26** theo đúng văn bản đề chính thức: truy vấn mùa hè, kho ảnh mùa đông, dung sai ±10 khung, file nộp `query_id,winter_id`, Recall@1 thang 0-100, private test trong zip có mật khẩu. Dữ liệu được cắt lại từ bản Nordland công khai nên các đoạn tuyến và ảnh cụ thể khác với đề thật, còn quy mô, định dạng và cách chấm giữ như đề.
+Dựng lại **tác vụ 2 vòng sơ loại OlpAI'26** theo đúng văn bản đề chính thức: truy vấn mùa hè, kho ảnh mùa đông, dung sai ±10 khung, file nộp `query_id,winter_id` (bản Kaggle này đổi thành `id,winter_id`), Recall@1 thang 0-100, private test trong zip có mật khẩu. Dữ liệu được cắt lại từ bản Nordland công khai nên các đoạn tuyến và ảnh cụ thể khác với đề thật, còn quy mô, định dạng và cách chấm giữ như đề.
 
 ## Overview
 
@@ -31,17 +31,17 @@ Recall@1 = 100/n x số ảnh q có |pos(ŵ) - pos(q)| ≤ 10
 - `pos` là nhãn `position`: số thứ tự khung hình của bản quay mùa đông. Ảnh mùa hè q và ảnh mùa đông w được coi là cùng một chỗ nếu lệch không quá 10 khung, nên mỗi ảnh mùa hè có nhiều ảnh mùa đông được tính là đúng.
 - n là số ảnh mùa hè của tập đang chấm, không phụ thuộc số dòng trong file.
 
-File `output.csv` có tiêu đề `query_id,winter_id` (tên file ảnh, bỏ đuôi `.jpg`), mỗi ảnh mùa hè một dòng:
+File `output.csv` có tiêu đề `id,winter_id` (tên file ảnh, bỏ đuôi `.jpg`), mỗi ảnh mùa hè một dòng:
 
 ```
-query_id,winter_id
+id,winter_id
 q_7d1a0c,w_03be91
 ```
 
 Khi chấm:
 
-- `query_id` xuất hiện nhiều dòng thì chỉ chấm dòng đầu tiên.
-- Dòng có `query_id` không thuộc tập kiểm tra bị bỏ qua.
+- `id` xuất hiện nhiều dòng thì chỉ chấm dòng đầu tiên.
+- Dòng có `id` không thuộc tập kiểm tra bị bỏ qua.
 - Ảnh mùa hè không có dòng nào, hoặc có `winter_id` không thuộc kho, tính là định vị sai.
 - File thiếu cột hoặc sai tên cột được 0 điểm.
 
@@ -64,7 +64,7 @@ validation_summer.csv, validation_winter.csv
 test/queries/*.jpg            450 ảnh mùa hè của public test (bị làm hỏng)
 test/database/*.jpg           9.100 ảnh mùa đông của cả public và private test, trộn chung
 private_test.zip              (có mật khẩu) private_test/queries/*.jpg: 460 ảnh mùa hè (bị làm hỏng)
-sample_submission.csv         query_id,winter_id cho cả 910 ảnh (dự đoán ngẫu nhiên)
+sample_submission.csv         id,winter_id cho cả 910 ảnh (dự đoán ngẫu nhiên)
 baseline.ipynb, baseline.py   baseline so khớp ảnh thu nhỏ, có tự chấm trên validation
 LICENSE-DATASET.txt
 ```
@@ -83,6 +83,7 @@ zipfile.ZipFile("private_test.zip").extractall(".", pwd=b"<mật khẩu>")   # h
 | Đoạn tuyến, ảnh cụ thể | Do BTC chọn | Cắt từ 27.592 khung đã lọc (bỏ khung tàu dừng, chạy chậm, trong hầm) của bản Hugging Face |
 | Kho mùa đông của test | 9.098 ảnh | 9.100 ảnh |
 | Cách làm hỏng ảnh hè | Không công bố | Mỗi ảnh 1-2 kiểu trong 7 kiểu đề nêu (tối, nhoè, sương mù, nén JPEG mạnh, độ phân giải thấp, mưa, chói), áp cho validation và test |
+| Tên cột file nộp | `query_id,winter_id` | `id,winter_id` (Kaggle chọn cột ID tên `id`) |
 | Nộp private | Nộp riêng 5 lần ở tiếng cuối | Kaggle chấm cả 910 dòng trong một file, cột `Usage` tách public/private |
 
 Nguồn: Nordland (Sünderhauf, Neubert, Protzel, ICRA 2013 workshop), bản Hugging Face `Somayeh-h/Nordland`, giấy phép CC BY-NC-SA 4.0. Đề gốc: OlpAI'26 vòng sơ loại, tác vụ 2.

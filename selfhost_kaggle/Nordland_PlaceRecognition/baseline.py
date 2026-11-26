@@ -2,7 +2,7 @@
 # # Baseline - Định vị tàu hoả bốn mùa
 #
 # Không học gì: thu mỗi ảnh về 64x32 xám, chuẩn hoá từng ô 8x8, so cosine giữa ảnh mùa hè cần định vị và kho ảnh mùa đông,
-# lấy ảnh mùa đông giống nhất. Notebook: tự chấm Recall@1 trên validation, rồi ghi `output.csv` (`query_id,winter_id`).
+# lấy ảnh mùa đông giống nhất. Notebook: tự chấm Recall@1 trên validation, rồi ghi `output.csv` (`id,winter_id`: id là tên ảnh mùa hè).
 #
 # Chạy: `python baseline.py [thư_mục_dữ_liệu]`. Trên Kaggle tự tìm dữ liệu trong `/kaggle/input`.
 # Muốn dự đoán cả private test: giải nén `private_test.zip` (mật khẩu công bố ở tiếng cuối) vào thư mục làm việc trước khi chạy.
@@ -57,10 +57,10 @@ for thu in [Path("private_test/queries"), D / "private_test/queries"]:
     if thu.is_dir():
         q_paths += sorted(thu.glob("*.jpg")); break
 best = dinh_vi(q_paths, [D / f"test/database/{i}.jpg" for i in db])
-out = pd.DataFrame({"query_id": [p.stem for p in q_paths], "winter_id": np.array(db)[best]})
+out = pd.DataFrame({"id": [p.stem for p in q_paths], "winter_id": np.array(db)[best]})
 # Kaggle đòi đủ mọi dòng của sample_submission (910): ảnh chưa dự đoán được (private khi chưa có mật khẩu) giữ dòng mẫu
 mau = pd.read_csv(D / "sample_submission.csv")
-du_doan = dict(zip(out.query_id, out.winter_id))
-mau["winter_id"] = [du_doan.get(q, w) for q, w in zip(mau.query_id, mau.winter_id)]
+du_doan = dict(zip(out.id, out.winter_id))
+mau["winter_id"] = [du_doan.get(q, w) for q, w in zip(mau.id, mau.winter_id)]
 mau.to_csv("output.csv", index=False)
-print(f"ghi output.csv: {len(mau)} dòng, {mau.query_id.isin(du_doan).sum()} ảnh mùa hè có dự đoán")
+print(f"ghi output.csv: {len(mau)} dòng, {mau.id.isin(du_doan).sum()} ảnh mùa hè có dự đoán")
