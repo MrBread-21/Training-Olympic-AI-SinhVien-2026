@@ -47,7 +47,7 @@ Khi chấm:
 
 Ví dụ: 4 ảnh mùa hè có vị trí thật 9053, 9123, 9300, 9412; ảnh mùa đông dự đoán có vị trí 9045, 9140, 9300, 9405. Sai lệch 8, 17, 0, 7, nên Recall@1 = 100 x 3/4 = 75,00.
 
-Trên Kaggle: phần public là 450 ảnh trong `test/queries/`, phần private là 460 ảnh trong `private_test.zip`. File nộp nên có đủ 910 dòng; trước khi có mật khẩu, các dòng private để nguyên như `sample_submission.csv`.
+Trên Kaggle: phần public là 450 ảnh trong `test/queries/`, phần private là 460 ảnh trong `private_test.zip`. File nộp phải có đủ 910 dòng (Kaggle từ chối file thiếu dòng); trước khi có mật khẩu, các dòng private để nguyên như `sample_submission.csv`.
 
 ## Data
 
