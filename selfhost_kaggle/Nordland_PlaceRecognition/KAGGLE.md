@@ -30,7 +30,7 @@ Với mỗi ảnh mùa hè trong `queries/`, chọn **đúng một** ảnh mùa 
 
 ### Khác biệt với đề thật
 
-Dữ liệu được cắt lại từ bản Nordland công khai (27.592 khung đã bỏ đoạn tàu dừng và đường hầm) nên đoạn tuyến và ảnh cụ thể khác đề thật; quy mô, định dạng, cách chấm giữ như đề. Kiểu làm hỏng ảnh mùa hè do người dựng đề tự chọn theo 7 kiểu đề nêu, áp cho validation và test.
+Dữ liệu được cắt lại từ bản Nordland công khai (27.592 khung đã bỏ đoạn tàu dừng và đường hầm) nên đoạn tuyến và ảnh cụ thể khác đề thật; quy mô, định dạng, cách chấm giữ như đề, riêng cột đầu file nộp đề thật tên `query_id`, ở đây đổi thành `id` cho khớp cột ID của Kaggle. Kiểu làm hỏng ảnh mùa hè do người dựng đề tự chọn theo 7 kiểu đề nêu, áp cho validation và test.
 
 ## Evaluation
 
@@ -38,8 +38,8 @@ Dữ liệu được cắt lại từ bản Nordland công khai (27.592 khung đ
 
 Khi chấm:
 
-- `query_id` xuất hiện nhiều dòng thì chỉ chấm dòng đầu tiên.
-- Dòng có `query_id` không thuộc tập kiểm tra bị bỏ qua.
+- `id` xuất hiện nhiều dòng thì chỉ chấm dòng đầu tiên.
+- Dòng có `id` không thuộc tập kiểm tra bị bỏ qua.
 - Ảnh mùa hè không có dòng nào, hoặc có `winter_id` không thuộc kho, tính là định vị sai.
 - File thiếu cột hoặc sai tên cột được 0 điểm.
 
@@ -47,10 +47,10 @@ Ví dụ: 4 ảnh mùa hè có vị trí thật 9053, 9123, 9300, 9412; ảnh m�
 
 ## Submission File
 
-File `output.csv` có tiêu đề `query_id,winter_id`, mỗi ảnh mùa hè một dòng (tên file ảnh, bỏ đuôi `.jpg`):
+File `output.csv` có tiêu đề `id,winter_id`, mỗi ảnh mùa hè một dòng (tên file ảnh, bỏ đuôi `.jpg`):
 
 ```
-query_id,winter_id
+id,winter_id
 q_7d1a0c,w_03be91
 ```
 
@@ -89,7 +89,7 @@ Mọi ảnh là `.jpg` 640x360. Tên file là chuỗi ngẫu nhiên; tên và th
 - `test/queries/*.jpg`: 450 ảnh mùa hè của public test.
 - `test/database/*.jpg`: 9.100 ảnh mùa đông của cả public và private test, trộn chung.
 - `private_test.zip` (có mật khẩu): `private_test/queries/*.jpg`, 460 ảnh mùa hè. Giải nén: `zipfile.ZipFile("private_test.zip").extractall(".", pwd=b"<mật khẩu>")`.
-- `sample_submission.csv`: `query_id,winter_id` cho cả 910 ảnh.
+- `sample_submission.csv`: `id,winter_id` cho cả 910 ảnh.
 - `baseline.ipynb` / `baseline.py`: so khớp ảnh thu nhỏ, có tự chấm Recall@1 trên validation; trên Kaggle tự tìm dữ liệu trong `/kaggle/input`.
 
 ## Data license
@@ -100,7 +100,7 @@ CC BY-NC-SA 4.0
 
 - Data: `Nordland_PlaceRecognition_data.zip`
 - Metric notebook: dán toàn bộ `host/metric.py` (hàm `recall_at_1_vpr`)
-- Solution: `host/solution.csv` (cột id `query_id`, cột chia `Usage`)
+- Solution: `host/solution.csv` (cột id `id`, cột chia `Usage`)
 - Sample submission: `upload/sample_submission.csv`
 - Mật khẩu private test: `host/mat_khau_private_test.txt`, công bố ở tiếng cuối
 - Kiểm tra bằng sandbox submission: nộp `host/nop_dung_het.csv` phải ra 100, nộp `output.csv` của baseline phải gần `host/min_score.txt`

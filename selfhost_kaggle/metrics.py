@@ -122,9 +122,9 @@ def _recall(solution, submission, row_id_column_name, k):
 
 
 def recall_at_1_vpr(solution, submission, row_id_column_name):
-    """Định vị tàu hoả bốn mùa (OlpAI'26). Đáp án: query_id, positives (các winter_id lệch tối đa 10 khung, cách nhau dấu cách).
-    File nộp: query_id, winter_id (đúng một ảnh mùa đông cho mỗi ảnh mùa hè). Điểm = Recall@1 x 100, thang 0-100.
-    Luật chấm như đề: query_id lặp thì chỉ chấm dòng đầu; dòng có query_id lạ bị bỏ qua; ảnh không có dòng nào
+    """Định vị tàu hoả bốn mùa (OlpAI'26). Đáp án: id, positives (các winter_id lệch tối đa 10 khung, cách nhau dấu cách).
+    File nộp: id, winter_id (đúng một ảnh mùa đông cho mỗi ảnh mùa hè). Điểm = Recall@1 x 100, thang 0-100.
+    Luật chấm như đề: id lặp thì chỉ chấm dòng đầu; dòng có id lạ bị bỏ qua; ảnh không có dòng nào
     hoặc winter_id không thuộc kho tính là sai; thiếu cột hoặc sai tên cột được 0 điểm."""
     sol = solution.drop(columns=["Usage"], errors="ignore")
     if row_id_column_name not in submission.columns or "winter_id" not in submission.columns:

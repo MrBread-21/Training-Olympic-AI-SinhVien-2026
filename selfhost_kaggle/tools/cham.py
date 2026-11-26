@@ -14,6 +14,6 @@ spec = importlib.util.spec_from_file_location("metric_bai", host / "metric.py")
 mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
 sol = pd.read_csv(host / "solution.csv", dtype=str, keep_default_na=False)
 sub = pd.read_csv(nop, dtype=str, keep_default_na=False)
-cot_id = "query_id" if "query_id" in sol.columns else "id"
+cot_id = "id"
 for ten, part in [("Public", sol[sol.Usage == "Public"]), ("Private", sol[sol.Usage == "Private"]), ("Toàn bộ", sol)]:
     print(f"{ten:8s} {mod.score(part.reset_index(drop=True), sub, cot_id):.4f}")
