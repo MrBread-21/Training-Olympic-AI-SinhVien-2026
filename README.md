@@ -2,18 +2,21 @@
 
 Bài làm của MrBread ([@MrBread-21](https://github.com/MrBread-21)) trong repo luyện tập của đội cho kỳ thi Olympic Trí tuệ nhân tạo sinh viên Việt Nam 2026 (OlpAI'26): bài luyện theo chủ đề, đề thi thử đội tự dựng và host trên Kaggle, và lời giải các bài thi thử. Mọi lời giải theo luật của kỳ thi: chỉ backbone ImageNet trong danh sách của BTC, không mô hình ngôn ngữ huấn luyện sẵn, chạy được trên GPU nhỏ trong thời gian giới hạn.
 
+**Bắt đầu ôn luyện từ [`on_tap/`](on_tap/)**: lộ trình đến chung kết, 16 bài học theo dạng bài, quy trình phòng thi, metric tự viết.
+
 ## Cấu trúc
 
 ```
+on_tap/                            GIÁO TRÌNH: lộ trình, quy trình phòng thi, metric, 16 bài học theo dạng bài
 luyen_tap/                         bài luyện theo chủ đề
-└── CV/                            bộ bài luyện code tay CV theo ngày (20/11 đến 30/11)
+└── CV/                            bộ bài luyện code tay theo ngày (20/11 đến 5/12)
 selfhost_kaggle/                   ĐỀ các cuộc thi đội tự host trên Kaggle
 ├── tools/                         script tải dữ liệu, dựng đề, kiểm tra metric, nén gói
 ├── metrics.py                     hàm chấm theo giao diện Kaggle Metric Notebook
 └── <19 bài>/                      đề, nội dung từng ô Kaggle, baseline
 challenges/                        LỜI GIẢI
 ├── EuroSAT/  ImgCap/  VietnameseExtract/  CCTV_Street_Scence/  MSAD/    bài thi thử PHENIKAA
-└── Nordland_PlaceRecognition/     bài tự host trong selfhost_kaggle/
+└── Nordland_PlaceRecognition/ DimABSA_*/ KTVIC_Captioning/ ...   bài tự host trong selfhost_kaggle/
 ```
 
 Đề nằm ở `selfhost_kaggle/<tên bài>/`, lời giải của bài đó nằm ở `challenges/<cùng tên bài>/`.
@@ -46,6 +49,11 @@ Mỗi ngày một khung code cần thuộc, luyện theo điều kiện phòng t
 | 28/11 | `d28_nlp` | NFC, vocab, bucketing; TF-IDF + logistic; TextCNN; BM25 | F1 ≥ 0.87 / 0.85, Recall@1 ≥ 0.85 | 0.91 / 0.90 / 0.93 |
 | 29/11 | `d29_seq2seq` | nn.Transformer từ đầu, mặt nạ, greedy + beam, BLEU / chrF | BLEU ≥ 0.90 | 0.99 |
 | 30/11 | `d30_du_lieu_bang` | ColumnTransformer, encoding, HistGradientBoosting, stacking OOF | AUROC ≥ 0.73 | 0.75 |
+| 1/12 | `d01_am_thanh` | wav, log-mel tự tính bằng `torch.stft`, CNN, trộn tạp âm theo SNR, SpecAugment | macro-F1 ≥ 0.85 | 0.92 |
+| 2/12 | `d02_caption` | CNN học từ khái niệm + truy hồi + MBR; encoder CNN + decoder GRU | CIDEr-D ≥ 3.6 / 4.5 | 4.27 / 4.82 |
+| 3/12 | `d03_hoi_dap` | NFC, chọn câu, sinh span, XGBoost xếp hạng, ngưỡng để trống | F1 ≥ 0.80 | 0.88 |
+| 4/12 | `d04_dimabsa` | Mệnh đề + Ridge cho VA; BIO BiLSTM + ghép cặp cho bộ tứ | RMSE_VA ≤ 0.70, cF1 ≥ 0.70 | 0.50 / 0.79 |
+| 5/12 | `d05_duong_di` | Dijkstra + Held-Karp; value iteration gridworld trơn trượt | 0.99 / 0.97 | 1.00 / 1.00 |
 
 Trọng tâm là CV; ba ngày cuối (NLP, seq2seq, dữ liệu bảng) là phần bổ trợ để không bị bất ngờ nếu đề ra ngoài CV. Ngưỡng được đặt để tách cách làm đúng khỏi cách làm sơ sài, ví dụ: giữ nguyên khung bài 21 cho bài 22 chỉ được 0.82, quên chuẩn hoá NFC ở bài 28 chỉ được 0.80, chỉ dùng FGSM ở bài 25 chỉ được 0.42.
 
@@ -120,6 +128,14 @@ Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ
 | Bài | Hướng giải chính | Val | Test (public / private) |
 |---|---|---|---|
 | [Nordland_PlaceRecognition](challenges/Nordland_PlaceRecognition/) | ResNet-18 ImageNet tới layer3, descriptor lưới không gian 4x7, InfoNCE đông-hè với negative là các khung liền kề, đóng băng BatchNorm; train 25 phút trên GTX 1650 | R@1 0.929 | **0.814 / 0.835** (baseline 0.069) |
+| [DimABSA_VA](challenges/DimABSA_VA/) | Mệnh đề chứa khía cạnh + cửa sổ + cả câu, TF-IDF từ và ký tự, Ridge; arousal theo quan hệ chữ V; giãn dự đoán học trên dev | RMSE_VA 1.35 | **1.863 / 1.871** (baseline 1.901 / 1.896, thấp là tốt) |
+| [DimABSA_Quad](challenges/DimABSA_Quad/) | BIO cho aspect / opinion bằng BiLSTM + ký tự từ đầu, ghép cùng mệnh đề, category bằng logistic, VA bằng Ridge, bỏ NULL | cF1 0.63 | **0.514 / 0.480** (baseline 0.305 / 0.281) |
+| [KTVIC_Captioning](challenges/KTVIC_Captioning/) | ResNet-50 + ConvNeXt-T ImageNet đóng băng, truy hồi 60 ảnh gần nhất, chọn câu đồng thuận (MBR) | CIDEr-D 0.98 | **1.029 / 0.925** (baseline 0.196 / 0.217) |
+| [CIFAR_Adversarial](challenges/CIFAR_Adversarial/) | Tấn công ensemble (A + 3 mô hình thay thế tự train) bằng PGD có quán tính (MI) và đa dạng đầu vào (DI), eps 8/255 | lừa A 98% | **0.962 / 0.963** (baseline FGSM 0.809 / 0.808) |
+| [SpeechCommands_KWS](challenges/SpeechCommands_KWS/) | Log-mel tự tính, CNN 2D từ đầu, trộn tạp âm theo SNR, SpecAugment, trọng số lớp | macro-F1 0.84 | **0.932 / 0.905** (baseline 0.377 / 0.346) |
+| [HomeCredit_Tabular](challenges/HomeCredit_Tabular/) | Gộp bureau và previous_application theo id, đặc trưng tỉ lệ, HistGradientBoosting, val theo thời gian | AUROC 0.768 | **0.779 / 0.771** (baseline 0.761 / 0.747) |
+| [Robot_PathPlanning](challenges/Robot_PathPlanning/) | Dijkstra (chi phí bước vào ô) + Held-Karp chọn thứ tự điểm mốc | tối ưu 50/50 | **1.000 / 1.000** (baseline 0.777 / 0.778) |
+| [ViQuAD_ExtractiveQA](challenges/ViQuAD_ExtractiveQA/) | Thử nghiệm sinh span + XGBoost: **chưa vượt baseline**; README có chẩn đoán và hướng làm | F1 0.342 | 0.299 / 0.336 (baseline 0.276 / 0.337) |
 
 Lời giải Nordland được viết cho bản đề giả định trước đây (ảnh đông tìm ảnh hè, dung sai ±2 khung, thang 0-1); đề đã được dựng lại theo văn bản chính thức nên các con số trên không so được với đề hiện tại.
 
