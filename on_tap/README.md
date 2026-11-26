@@ -24,19 +24,19 @@ Ba tài liệu chung, đọc trước:
 | 3 | Phát hiện bất thường | [03](dang_bai/03_bat_thuong.md) | d27 (A) | MVTec_AnomalyDetection (0,642) | CCTV_Street_Scence |
 | 4 | Truy xuất ảnh, nhận dạng địa điểm | [04](dang_bai/04_truy_xuat_anh.md) | d24 | **Nordland_PlaceRecognition** (đề sơ loại OlpAI'26; 4,22) | Nordland_PlaceRecognition |
 | 5 | Video: phân loại, định vị sự kiện | [05](dang_bai/05_video.md) | d26 | UCF101_ActionRecognition (0,864) | MSAD |
-| 6 | Tấn công đối kháng | [06](dang_bai/06_doi_khang.md) | d25 | CIFAR_Adversarial (0,809) | |
-| 7 | Sinh caption | [07](dang_bai/07_caption.md) | **d02** | KTVIC_Captioning (0,196) | ImgCap |
-| 8 | Âm thanh | [08](dang_bai/08_am_thanh.md) | **d01** | SpeechCommands_KWS (0,377) | |
+| 6 | Tấn công đối kháng | [06](dang_bai/06_doi_khang.md) | d25 | CIFAR_Adversarial (0,809) | CIFAR_Adversarial (0,962) |
+| 7 | Sinh caption | [07](dang_bai/07_caption.md) | **d02** | KTVIC_Captioning (0,196) | ImgCap, KTVIC_Captioning (1,029) |
+| 8 | Âm thanh | [08](dang_bai/08_am_thanh.md) | **d01** | SpeechCommands_KWS (0,377) | SpeechCommands_KWS (0,932) |
 | 9 | Phân loại văn bản | [09](dang_bai/09_phan_loai_van_ban.md) | d28 (A, A2) | VSFC_Sentiment (0,664) | |
 | 10 | Gán nhãn chuỗi (NER) | [10](dang_bai/10_gan_nhan_chuoi.md) | d04 (B) | PhoNER_COVID19 (0,428) | |
-| 11 | Hỏi đáp trích xuất | [11](dang_bai/11_hoi_dap_trich_xuat.md) | **d03** | ViQuAD_ExtractiveQA (0,276) | VietnameseExtract |
+| 11 | Hỏi đáp trích xuất | [11](dang_bai/11_hoi_dap_trich_xuat.md) | **d03** | ViQuAD_ExtractiveQA (0,276) | VietnameseExtract; ViQuAD_ExtractiveQA (thử nghiệm, chưa vượt baseline) |
 | 12 | Dịch máy, thêm dấu (seq2seq) | [12](dang_bai/12_seq2seq.md) | d29 | IWSLT_EnVi_Translation (2,32), Vietnamese_Diacritics (0,754) | |
 | 13 | Truy xuất văn bản | [13](dang_bai/13_truy_xuat_van_ban.md) | d28 (B) | ViQuAD_PassageRetrieval (0,544) | |
-| 14 | Cảm xúc đa chiều theo khía cạnh | [14](dang_bai/14_dimabsa.md) | **d04** | **DimABSA_VA** (1,901, thấp là tốt), **DimABSA_Quad** (0,305) (đề NLP OlpAI'26) | |
-| 15 | Dữ liệu bảng | [15](dang_bai/15_du_lieu_bang.md) | d30 | HomeCredit_Tabular (0,761) | |
-| 16 | Tìm đường, học tăng cường | [16](dang_bai/16_do_thi_robot.md) | **d05** | Robot_PathPlanning (0,777) | |
+| 14 | Cảm xúc đa chiều theo khía cạnh | [14](dang_bai/14_dimabsa.md) | **d04** | **DimABSA_VA** (1,901, thấp là tốt), **DimABSA_Quad** (0,305) (đề NLP OlpAI'26) | DimABSA_VA (1,863), DimABSA_Quad (0,514) |
+| 15 | Dữ liệu bảng | [15](dang_bai/15_du_lieu_bang.md) | d30 | HomeCredit_Tabular (0,761) | HomeCredit_Tabular (0,779) |
+| 16 | Tìm đường, học tăng cường | [16](dang_bai/16_do_thi_robot.md) | **d05** | Robot_PathPlanning (0,777) | Robot_PathPlanning (1,000) |
 
-Bài luyện code tay **in đậm** là bài mới cho các ngày 1-5/12 (dạng bài chưa có bài luyện).
+Bài luyện code tay **in đậm** là bài mới cho các ngày 1-5/12 (dạng bài chưa có bài luyện). Điểm trong cột lời giải tham khảo là điểm public của lời giải; **chỉ mở sau khi đã tự làm**.
 
 ## Lộ trình 26/11 - 6/12
 

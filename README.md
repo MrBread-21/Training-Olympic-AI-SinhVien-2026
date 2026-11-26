@@ -17,7 +17,7 @@ selfhost_kaggle/                   ĐỀ các cuộc thi đội tự host trên 
 └── <19 bài>/                      đề, nội dung từng ô Kaggle, baseline
 challenges/                        LỜI GIẢI                                                     MrBread
 ├── EuroSAT/  ImgCap/  VietnameseExtract/  CCTV_Street_Scence/  MSAD/    bài thi thử PHENIKAA
-└── Nordland_PlaceRecognition/     bài tự host trong selfhost_kaggle/
+└── Nordland_PlaceRecognition/ DimABSA_*/ KTVIC_Captioning/ ...   bài tự host trong selfhost_kaggle/
 ```
 
 Đề nằm ở `selfhost_kaggle/<tên bài>/`, lời giải của bài đó nằm ở `challenges/<cùng tên bài>/`.
@@ -30,7 +30,7 @@ challenges/                        LỜI GIẢI                                 
 | [`luyen_tap/CV/`](luyen_tap/CV/) | Bộ bài luyện code tay theo ngày | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 | [`luyen_tap/NLP/`](luyen_tap/NLP/) | Bộ 16 bài luyện NLP (8 nhóm dạng bài) | Hue ([@nguyenthithanhhue-13](https://github.com/nguyenthithanhhue-13)) |
 | [`selfhost_kaggle/`](selfhost_kaggle/) | Đề 19 cuộc thi Kaggle tự host và script dựng đề | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
-| [`challenges/`](challenges/) | Lời giải 5 bài PHENIKAA và bài Nordland | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
+| [`challenges/`](challenges/) | Lời giải 5 bài PHENIKAA và 9 bài tự host | MrBread ([@MrBread-21](https://github.com/MrBread-21)) |
 
 Mỗi thành viên làm trên nhánh riêng ([`MrBread`](../../tree/MrBread), [`feature/hue`](../../tree/feature/hue)) rồi gộp vào `main`.
 
@@ -139,6 +139,14 @@ Với EuroSAT, ImgCap và VietnameseExtract, điểm LB tốt nhất đến từ
 | Bài | Hướng giải chính | Val | Test (public / private) |
 |---|---|---|---|
 | [Nordland_PlaceRecognition](challenges/Nordland_PlaceRecognition/) | ResNet-18 ImageNet tới layer3, descriptor lưới không gian 4x7, InfoNCE đông-hè với negative là các khung liền kề, đóng băng BatchNorm; train 25 phút trên GTX 1650 | R@1 0.929 | **0.814 / 0.835** (baseline 0.069) |
+| [DimABSA_VA](challenges/DimABSA_VA/) | Mệnh đề chứa khía cạnh + cửa sổ + cả câu, TF-IDF từ và ký tự, Ridge; arousal theo quan hệ chữ V; giãn dự đoán học trên dev | RMSE_VA 1.35 | **1.863 / 1.871** (baseline 1.901 / 1.896, thấp là tốt) |
+| [DimABSA_Quad](challenges/DimABSA_Quad/) | BIO cho aspect / opinion bằng BiLSTM + ký tự từ đầu, ghép cùng mệnh đề, category bằng logistic, VA bằng Ridge, bỏ NULL | cF1 0.63 | **0.514 / 0.480** (baseline 0.305 / 0.281) |
+| [KTVIC_Captioning](challenges/KTVIC_Captioning/) | ResNet-50 + ConvNeXt-T ImageNet đóng băng, truy hồi 60 ảnh gần nhất, chọn câu đồng thuận (MBR) | CIDEr-D 0.98 | **1.029 / 0.925** (baseline 0.196 / 0.217) |
+| [CIFAR_Adversarial](challenges/CIFAR_Adversarial/) | Tấn công ensemble (A + 3 mô hình thay thế tự train) bằng PGD có quán tính (MI) và đa dạng đầu vào (DI), eps 8/255 | lừa A 98% | **0.962 / 0.963** (baseline FGSM 0.809 / 0.808) |
+| [SpeechCommands_KWS](challenges/SpeechCommands_KWS/) | Log-mel tự tính, CNN 2D từ đầu, trộn tạp âm theo SNR, SpecAugment, trọng số lớp | macro-F1 0.84 | **0.932 / 0.905** (baseline 0.377 / 0.346) |
+| [HomeCredit_Tabular](challenges/HomeCredit_Tabular/) | Gộp bureau và previous_application theo id, đặc trưng tỉ lệ, HistGradientBoosting, val theo thời gian | AUROC 0.768 | **0.779 / 0.771** (baseline 0.761 / 0.747) |
+| [Robot_PathPlanning](challenges/Robot_PathPlanning/) | Dijkstra (chi phí bước vào ô) + Held-Karp chọn thứ tự điểm mốc | tối ưu 50/50 | **1.000 / 1.000** (baseline 0.777 / 0.778) |
+| [ViQuAD_ExtractiveQA](challenges/ViQuAD_ExtractiveQA/) | Thử nghiệm sinh span + XGBoost: **chưa vượt baseline**; README có chẩn đoán và hướng làm | F1 0.342 | 0.299 / 0.336 (baseline 0.276 / 0.337) |
 
 Lời giải Nordland được viết cho bản đề giả định trước đây (ảnh đông tìm ảnh hè, dung sai ±2 khung, thang 0-1); đề đã được dựng lại theo văn bản chính thức nên các con số trên không so được với đề hiện tại.
 
