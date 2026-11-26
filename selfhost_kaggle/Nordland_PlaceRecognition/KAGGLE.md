@@ -54,7 +54,7 @@ query_id,winter_id
 q_7d1a0c,w_03be91
 ```
 
-Public là 450 ảnh trong `test/queries/`, private là 460 ảnh trong `private_test.zip`. Nên nộp đủ 910 dòng; trước khi có mật khẩu, giữ nguyên các dòng private như trong `sample_submission.csv`.
+Public là 450 ảnh trong `test/queries/`, private là 460 ảnh trong `private_test.zip`. Phải nộp đủ 910 dòng (Kaggle từ chối file thiếu dòng); trước khi có mật khẩu, giữ nguyên các dòng private như trong `sample_submission.csv`.
 
 ## Timeline
 

@@ -58,5 +58,9 @@ for thu in [Path("private_test/queries"), D / "private_test/queries"]:
         q_paths += sorted(thu.glob("*.jpg")); break
 best = dinh_vi(q_paths, [D / f"test/database/{i}.jpg" for i in db])
 out = pd.DataFrame({"query_id": [p.stem for p in q_paths], "winter_id": np.array(db)[best]})
-out.to_csv("output.csv", index=False)
-print(f"ghi output.csv: {len(out)} ảnh mùa hè")
+# Kaggle đòi đủ mọi dòng của sample_submission (910): ảnh chưa dự đoán được (private khi chưa có mật khẩu) giữ dòng mẫu
+mau = pd.read_csv(D / "sample_submission.csv")
+du_doan = dict(zip(out.query_id, out.winter_id))
+mau["winter_id"] = [du_doan.get(q, w) for q, w in zip(mau.query_id, mau.winter_id)]
+mau.to_csv("output.csv", index=False)
+print(f"ghi output.csv: {len(mau)} dòng, {mau.query_id.isin(du_doan).sum()} ảnh mùa hè có dự đoán")
