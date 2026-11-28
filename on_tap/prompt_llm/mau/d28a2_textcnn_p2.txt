@@ -1,0 +1,18 @@
+Write PART 2 of a Python script in ONE code block. No comments, no explanation. Flat code, no main().
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+PART 1 is already in the file (do not repeat it). It defines:
+CONTRACT (names shared by part 1 and part 2): classes (sorted label list); train, test (DataFrames); vocab (dict word to id); X_tr, X_te (lists of id lists); y (torch.long tensor of train labels); tr_idx, va_idx (numpy arrays of train positions); batches(X, idx, ys, shuffle) yields (pos, xb, yb): pos = list of positions from idx, xb = padded LongTensor on dev with at least 4 columns, yb = ys[pos] on dev or None when ys is None; TextCNN(V) (nn.Module returning 5 logits).
+
+TASK: train the TextCNN and predict the test sentences. OUTPUT: submission_a2.csv with columns id,label (class NAMES) in the order of test. METRIC: macro-F1. Must run in under 3 minutes.
+
+WRITE:
+1. model = TextCNN(len(vocab)).to(dev). Created once before the epoch loop: opt = torch.optim.AdamW(model.parameters(), lr=2e-3, weight_decay=1e-4); crit = nn.CrossEntropyLoss(label_smoothing=0.1).
+2. predict(X, idx): model.eval(); out = np.zeros(len(X), dtype=int); with torch.inference_mode(), amp(): for pos, xb, _ in batches(X, idx, None, False): out[pos] = model(xb).argmax(1).cpu().numpy(); return out[idx].
+3. 12 epochs: model.train(); for pos, xb, yb in batches(X_tr, tr_idx, y, True): forward with amp(), loss, backward, step. After the batch loop: f1 = f1_score(y[va_idx].numpy(), predict(X_tr, va_idx), average="macro"); print epoch and f1; save best state_dict to best_a2.pt.
+4. model.load_state_dict(torch.load("best_a2.pt")); p = predict(X_te, np.arange(len(X_te))); pd.DataFrame({"id": test.id, "label": [classes[i] for i in p]}).to_csv("submission_a2.csv", index=False).
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: model = TextCNN(len(vocab)).to(dev)

@@ -1,0 +1,12 @@
+Write ONE Python function and its tests in ONE ```python code block. No comments, no explanation. Use only math and collections.Counter (already imported).
+
+FUNCTION: bleu(hyps, refs) = corpus-level BLEU-4 in [0, 1]. hyps and refs are lists of the same length; each item is a list of word strings.
+
+ALGORITHM: num = [0] * 4; den = [0] * 4; c = r = 0. For each pair (h, ref): c += len(h); r += len(ref); for n in 1..4: hc = Counter(tuple(h[i:i + n]) for i in range(len(h) - n + 1)), rc likewise for ref; num[n - 1] += sum(min(k, rc[g]) for g, k in hc.items()); den[n - 1] += max(len(h) - n + 1, 0). If min(num) == 0 return 0.0. bp = 1.0 if c > r else math.exp(1 - r / c). Return bp * math.exp(sum(math.log(num[k] / den[k]) for k in range(4)) / 4).
+
+TESTS right after the function:
+assert abs(bleu([["a", "b", "c", "d", "e"]], [["a", "b", "c", "d", "e"]]) - 1) < 1e-12
+assert bleu([["a", "b", "c", "d"]], [["e", "f", "g", "h"]]) == 0
+assert 0 < bleu([["a", "b", "c", "d", "x"]], [["a", "b", "c", "d", "e"]]) < 1
+
+ANSWER: only the code block. Its first line must be: def bleu(hyps, refs):

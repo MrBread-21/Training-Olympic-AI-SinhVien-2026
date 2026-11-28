@@ -1,0 +1,20 @@
+Write PART 2 of a Python script in ONE code block. No comments, no explanation. Flat code at top level: no main(), no wrapper function around the training.
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+PART 1 is already in the file (do not repeat it). It defines:
+CONTRACT (names shared by part 1 and part 2): classes (sorted label list); train, test (DataFrames); wav_tr, wav_te (float tensors N x 16000 on dev); y_tr (torch.long on dev); spk (numpy array of speakers); add_noise(w, snr_db) (w: B x 16000, snr_db: tensor of size B); augment(w); logmel(w) returns B x 1 x 64 x T; spec_aug(m); Net (nn.Module, output 9 logits, written in part 2).
+
+TASK: train the keyword-spotting CNN (9 classes) and predict noisy test clips. OUTPUT: submission.csv with columns id,label in the order of test.csv. METRIC: macro-F1. Must run in under 5 minutes.
+
+WRITE:
+0. Net(nn.Module): layers = [nn.BatchNorm2d(1)]; for a, b in [(1, 32), (32, 64), (64, 128), (128, 128)]: layers += [nn.Conv2d(a, b, 3, padding=1), nn.BatchNorm2d(b), nn.ReLU(), nn.MaxPool2d(2)]; layers += [nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Dropout(0.3), nn.Linear(128, 9)]; self.f = nn.Sequential(*layers); forward(x) returns self.f(x).
+1. Split by speaker: tr, va = next(GroupShuffleSplit(n_splits=1, test_size=0.15, random_state=42).split(np.zeros(len(spk)), groups=spk)). Validation waves = add_noise(wav_tr[va], full tensor of 10.0) computed once after torch.manual_seed(0).
+2. model = Net().to(dev). Created once before the epoch loop: AdamW(lr=3e-3, weight_decay=1e-3), OneCycleLR(max_lr=3e-3, total_steps=25 * steps), steps = ceil(len(tr) / 64), CrossEntropyLoss(label_smoothing=0.1).
+3. predict(w): model.eval(), torch.inference_mode(), batches of 64, with amp(): logits of model(logmel(batch)), return argmax as numpy.
+4. 25 epochs: model.train(); perm = torch.randperm(len(tr)); for k in range(0, len(tr), 64): idx = tr[perm[k:k + 64].numpy()]; x = spec_aug(logmel(augment(wav_tr[idx]))); yb = y_tr[idx], forward with amp(), backward, opt.step(), sched.step(). After the batch loop: val macro-F1 with predict, print epoch, mean loss, F1, save best state_dict to best.pt.
+5. Load best.pt, predict wav_te, labels = [classes[i] for i in pred], write submission.csv with test.id, assert len == 900.
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: class Net(nn.Module):

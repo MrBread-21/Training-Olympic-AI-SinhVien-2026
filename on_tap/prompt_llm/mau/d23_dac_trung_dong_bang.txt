@@ -1,0 +1,23 @@
+Write the REST of a Python script in ONE code block. No comments, no explanation. Flat script, no main().
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: classify 64x64 shape images into 6 classes with a FROZEN ImageNet backbone and a linear classifier. Train images come in 96 groups (8 photos of one session share background and colour); test groups are new, so cross-validation must be grouped.
+
+DATA: data/train.csv: id,group,label (768 rows), image f"data/train/{id}.png". data/sample_submission.csv: id,label (288 test ids), image f"data/test/{id}.png".
+
+OUTPUT: submission.csv (id,label) for the test ids and oof.csv (id,label) with out-of-fold predictions for every train id.
+
+METRIC: macro-F1 on test.
+
+STEPS:
+1. backbone = torchvision.models.resnet50(weights="DEFAULT"); backbone.fc = nn.Identity(); eval mode on dev.
+2. feats(ids, folder): if f"feat_{folder}.npy" exists load it; else load images with np.array(Image.open(path).convert("RGB")), batches of 64, tensor permute(0, 3, 1, 2) float / 255, F.interpolate to 224 bilinear, ImageNet normalize, forward inside torch.inference_mode() and amp(), .float().cpu(); np.save the N x 2048 array.
+3. sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42). lr = make_pipeline(StandardScaler(), LogisticRegression(C=0.5, max_iter=3000)); knn = KNeighborsClassifier(n_neighbors=5, metric="cosine").
+4. For both models: oof = cross_val_predict(model, Xtr, y, cv=sgkf, groups=train.group); print macro-F1. Print confusion_matrix of the logistic OOF with sorted class names.
+5. Also print the logistic OOF macro-F1 with plain StratifiedKFold(5, shuffle=True, random_state=42) to show the leak.
+6. Write oof.csv from the logistic OOF. Fit lr on all train, predict test, write submission.csv by id, assert no NaN.
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: train = pd.read_csv("data/train.csv")

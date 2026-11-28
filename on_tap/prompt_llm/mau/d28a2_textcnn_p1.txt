@@ -1,0 +1,17 @@
+Write PART 1 of a Python script in ONE code block. No comments, no explanation. Only definitions and data loading, no training.
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: Vietnamese sentence topic classification, 5 classes, TextCNN trained from scratch. DATA: data/a_train.csv: id,text,label (3000 rows). data/a_test.csv: id,text (1000 rows). Text mixes NFC and NFD Unicode.
+
+CONTRACT (names shared by part 1 and part 2): classes (sorted label list); train, test (DataFrames); vocab (dict word to id); X_tr, X_te (lists of id lists); y (torch.long tensor of train labels); tr_idx, va_idx (numpy arrays of train positions); batches(X, idx, ys, shuffle) yields (pos, xb, yb): pos = list of positions from idx, xb = padded LongTensor on dev with at least 4 columns, yb = ys[pos] on dev or None when ys is None; TextCNN(V) (nn.Module returning 5 logits).
+
+WRITE:
+1. tok(s) = re.findall(r"\w+", unicodedata.normalize("NFC", s).lower()). cnt = Counter(w for t in train.text for w in tok(t)); vocab = {"<pad>": 0, "<unk>": 1}, then every word with cnt >= 2 gets the next id. enc(s) = [vocab.get(w, 1) for w in tok(s)][:60] or [1].
+2. X_tr = [enc(s) for s in train.text]; X_te likewise; classes = sorted(train.label.unique()); y = torch.tensor([classes.index(l) for l in train.label]); tr_idx, va_idx = train_test_split(np.arange(len(X_tr)), test_size=0.1, stratify=y.numpy(), random_state=42).
+3. batches: order = sorted(idx, key=lambda i: len(X[i])); chunks = [order[k:k + 64] for k in range(0, len(order), 64)]; if shuffle: random.shuffle(chunks); for pos in chunks: xb = pad_sequence([torch.tensor(X[i]) for i in pos], batch_first=True, padding_value=0); if xb.size(1) < 4: xb = F.pad(xb, (0, 4 - xb.size(1))); yield pos, xb.to(dev), (ys[pos].to(dev) if ys is not None else None).
+4. TextCNN(nn.Module): self.emb = nn.Embedding(V, 128, padding_idx=0); self.convs = nn.ModuleList([nn.Conv1d(128, 100, k) for k in (2, 3, 4)]); self.drop = nn.Dropout(0.5); self.fc = nn.Linear(300, 5). forward(x): e = self.emb(x).transpose(1, 2); h = torch.cat([F.relu(c(e)).max(dim=2).values for c in self.convs], 1); return self.fc(self.drop(h)).
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: train = pd.read_csv("data/a_train.csv")

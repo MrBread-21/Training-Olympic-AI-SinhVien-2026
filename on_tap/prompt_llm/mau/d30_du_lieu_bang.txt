@@ -1,0 +1,25 @@
+Write ONE complete Python script in ONE code block. No comments, no explanation. Flat script, no main().
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: binary classification on a table (customer churn). Only pandas, numpy, scikit-learn.
+
+DATA:
+- data/train.csv: id, tuoi, thu_nhap, so_nam_kh, cuoc_goi_ho_tro, thanh_toan_tre, diem_hai_long (numeric), thanh_pho, nghe_nghiep, goi_cuoc (string categories), churn (0/1). 6000 rows. Missing values in numeric and category columns; thanh_pho has rare values.
+- data/test.csv: same columns without churn, 3000 rows.
+
+OUTPUT: submission.csv with columns id,prob (probability of churn = 1), rows in the order of test.csv.
+
+METRIC: AUROC, so output probabilities, not labels.
+
+RULES: call seed_all(42) at the top (random, numpy). All random_state=42. No try/except.
+
+SKELETON (follow exactly):
+- for df in (train, test): df["tre_x_ho_tro"] = df.thanh_toan_tre * df.cuoc_goi_ho_tro
+- num = ["tuoi", "thu_nhap", "so_nam_kh", "cuoc_goi_ho_tro", "thanh_toan_tre", "diem_hai_long", "tre_x_ho_tro"]; cat = ["thanh_pho", "nghe_nghiep", "goi_cuoc"]; X = train[num + cat]; y = train.churn; Xt = test[num + cat].
+- model_a = make_pipeline(ColumnTransformer([("num", make_pipeline(SimpleImputer(strategy="median", add_indicator=True), StandardScaler()), num), ("cat", make_pipeline(SimpleImputer(strategy="most_frequent"), OneHotEncoder(handle_unknown="ignore", min_frequency=20)), cat)]), LogisticRegression(max_iter=2000)).
+- model_b = make_pipeline(ColumnTransformer([("cat", make_pipeline(SimpleImputer(strategy="constant", fill_value="NA"), OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)), cat), ("num", "passthrough", num)]), HistGradientBoostingClassifier(learning_rate=0.05, max_iter=400, categorical_features=[0, 1, 2], random_state=42)).
+- cv = StratifiedKFold(5, shuffle=True, random_state=42); oof_a, oof_b = cross_val_predict(model, X, y, cv=cv, method="predict_proba")[:, 1]; print roc_auc_score of each.
+- logit(p) = np.log(p / (1 - p)) after np.clip(p, 1e-6, 1 - 1e-6); Z = np.column_stack([logit(oof_a), logit(oof_b)]); meta = LogisticRegression(); print AUROC of cross_val_predict(meta, Z, y, cv=cv, method="predict_proba")[:, 1].
+- meta.fit(Z, y); fit model_a and model_b on X, y; Zt from their test probabilities; prob = meta.predict_proba(Zt)[:, 1].
+- pd.DataFrame({"id": test.id, "prob": prob}).to_csv("submission.csv", index=False); assert no NaN.
