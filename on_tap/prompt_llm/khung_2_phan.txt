@@ -1,0 +1,38 @@
+===== CUỘC TRÒ CHUYỆN 1 =====
+Write PART 1 of a Python script in ONE code block. No comments, no explanation. Only definitions and data loading, no training.
+
+HEADER (already at the top of the file, do not repeat it): <chép nguyên câu HEADER của khung_1_phan.txt>
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: <một câu mô tả bài>. DATA: <đường dẫn, cột, số dòng, điều đặc biệt>.
+
+CONTRACT (names shared by part 1 and part 2): <tên biến (kiểu, kích thước, nằm trên dev hay không)>; <tên hàm(tham số) trả về gì>; <tên lớp mô hình(tham số) trả về gì>; <tên nào viết ở part 2 thì ghi "(written in part 2)">.
+
+WRITE:
+1. <đọc dữ liệu>
+2. <hàm tiền xử lý / tạo batch: câu lệnh cụ thể>
+3. <các hàm phụ>
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: <dòng đầu>
+
+===== CUỘC TRÒ CHUYỆN 2 (mở cuộc mới) =====
+Write PART 2 of a Python script in ONE code block. No comments, no explanation. Flat code, no main().
+
+HEADER (already at the top of the file, do not repeat it): <như trên>
+
+STYLE: <như trên>
+
+PART 1 is already in the file (do not repeat it). It defines:
+CONTRACT (names shared by part 1 and part 2): <chép NGUYÊN VĂN câu CONTRACT ở cuộc 1>
+
+TASK: <train gì, dự đoán gì>. OUTPUT: <file, cột, định dạng>. METRIC: <metric>. Must run in under <N> minutes.
+
+WRITE:
+0. <phần dời từ part 1 sang nếu part 1 bị cắt, ví dụ lớp mô hình>
+1. <mô hình, optimizer, scheduler, loss: tạo MỘT lần>
+2. <hàm predict: eval, inference_mode, amp, ghép kết quả theo vị trí gốc>
+3. <vòng epoch, val sau vòng batch, lưu best>
+4. <nạp best, dự đoán test, đổi sang định dạng nộp, ghi file>
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: <dòng đầu>

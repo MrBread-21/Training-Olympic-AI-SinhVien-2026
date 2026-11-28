@@ -1,0 +1,12 @@
+Fix this Python snippet. Reply with only the corrected snippet in one ```python block, same variable names, no explanation.
+
+ERROR: <dòng cuối của traceback, ví dụ KeyError: (16, 4) on the line prev_i = prev[(current_mask, current_i)]>
+
+MEANING: <ý nghĩa từng biến đầu vào của đoạn code: kiểu, kích thước, chứa gì; trường hợp nào không có giá trị>
+
+GOAL: <đoạn code phải tạo ra gì, ví dụ path_order = list of waypoints in visiting order, each exactly once>
+
+CODE:
+```python
+<chỉ dán đoạn bị lỗi, 5-30 dòng, không dán cả file>
+```
