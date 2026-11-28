@@ -14,6 +14,7 @@ Ba tài liệu chung, đọc trước:
 - [00_quy_trinh_phong_thi.md](00_quy_trinh_phong_thi.md): luật, chia vai, lịch theo phút, notebook khung, `main.py`, checklist nộp bài.
 - [01_metric.md](01_metric.md) + [metric_tu_viet.py](metric_tu_viet.py): công thức và bẫy của mọi metric, code numpy đã đối chiếu với sklearn / nltk.
 - [02_huan_luyen.md](02_huan_luyen.md): chẩn đoán, validation, tối ưu, augmentation, ensemble, tốc độ, tái lập.
+- [prompt_llm/](prompt_llm/): luyện prompt cho chatbot phòng thi (DeepSeek-R1-Distill-Qwen-32B, 2.000 token mỗi cuộc trò chuyện): khung prompt, phần đầu file chuẩn, 16 prompt mẫu đã chấm bằng bộ chấm bài luyện, công cụ gửi prompt.
 
 ## Bản đồ dạng bài
 
