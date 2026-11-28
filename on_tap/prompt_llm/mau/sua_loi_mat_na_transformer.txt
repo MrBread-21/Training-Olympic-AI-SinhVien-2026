@@ -1,0 +1,24 @@
+Fix this Python snippet. Reply with only the corrected snippet in one ```python block, same variable names, no explanation.
+
+ERROR: RuntimeError: The shape of the 3D attn_mask is torch.Size([64, 5, 256]), but should be (256, 5, 5). Raised inside self.transformer(...).
+
+MEANING: src (B x Ls) and tgt_in (B x Lt) are LongTensors of token ids, 0 = padding. self.transformer = nn.Transformer(256, 4, 3, 3, 512, 0.1, batch_first=True). dev is the device.
+
+GOAL: padding masks must be computed from the token ids BEFORE embedding and passed by keyword: src_key_padding_mask, tgt_key_padding_mask, memory_key_padding_mask (True at padding). tgt_mask = causal mask. Return logits B x Lt x V.
+
+CODE:
+```python
+    def forward(self, src, tgt_in):
+        src = self.src_embedding(src) * 16
+        pos = torch.arange(src.size(1), device=dev).unsqueeze(0).repeat(src.size(0), 1)
+        src = src + self.positional(pos)
+        tgt = self.tgt_embedding(tgt_in) * 16
+        pos = torch.arange(tgt.size(1), device=dev).unsqueeze(0).repeat(tgt.size(0), 1)
+        tgt = tgt + self.positional(pos)
+        src_mask = src == 0
+        tgt_mask = nn.Transformer.generate_square_subsequent_mask(tgt.size(1), device=dev)
+        memory_mask = src == 0
+        out = self.transformer(src, tgt, src_mask, tgt_mask, memory_mask)
+        out = self.fc(out)
+        return out
+```

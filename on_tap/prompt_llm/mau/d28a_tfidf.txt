@@ -1,0 +1,22 @@
+Write ONE complete Python script in ONE code block. No comments, no explanation. At most 45 lines. Only pandas, numpy, scipy, scikit-learn, unicodedata, re.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: Vietnamese sentence topic classification, 5 classes.
+
+DATA:
+- data/a_train.csv: id,text,label (3000 rows).
+- data/a_test.csv: id,text (1000 rows).
+- Text mixes NFC and NFD Unicode forms, so normalize first.
+
+OUTPUT: submission_a.csv with columns id,label in the order of a_test.csv.
+
+METRIC: macro-F1.
+
+RULES: call seed_all(42) at the top (random, numpy). All random_state=42.
+
+STEPS:
+1. clean(s) = unicodedata.normalize("NFC", s).lower(), apply to train and test.
+2. Features: hstack of TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, min_df=2) and TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), sublinear_tf=True, min_df=2), fitted on train text only.
+3. clf = LogisticRegression(C=10, max_iter=3000). 5-fold StratifiedKFold OOF predictions with cross_val_predict; print macro-F1 and confusion_matrix.
+4. Fit on all train, predict test, write csv, assert no NaN.

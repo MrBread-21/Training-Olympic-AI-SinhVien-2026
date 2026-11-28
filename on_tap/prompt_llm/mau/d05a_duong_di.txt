@@ -1,0 +1,25 @@
+Write the REST of a Python script in ONE code block. No comments, no explanation. Flat functions, no classes, no main().
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd. seed_all(42) is already called.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: for each grid map, output the cheapest path that starts at S, visits every waypoint (in any order) and ends at G.
+
+DATA: data/a_maps.csv with columns id,grid (120 maps, 12-30 x 12-30). grid = rows joined by "/". Cells: "#" wall; digits 1-9 = cost paid when you ENTER the cell; S start; G goal; every other uppercase letter is a waypoint (4-9 per map); entering S, G or a waypoint costs 1.
+
+OUTPUT: submission_a.csv with columns id,actions where actions is a string of U/D/L/R (U = row-1, D = row+1, L = col-1, R = col+1).
+
+METRIC: optimal_cost / your_cost (invalid path scores 0). Must be optimal.
+
+STEPS (use these exact names and signatures):
+1. MOVES = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}; step_cost(ch) = int(ch) if ch.isdigit() else 1.
+2. dijkstra(g, src): g = list of row strings, src = (r, c). Returns (dist, par) with dist[(r, c)] = cost and par[(r, c)] = ((pr, pc), move). Loop over MOVES.items(), skip out-of-bounds and "#".
+3. path(par, src, dst): walk par back from dst to src, return the move string in forward order.
+4. Per map: S, G, pts = list of waypoint positions, K = len(pts), runs = {p: dijkstra(g, p) for p in pts + [S]}, d(a, b) = runs[a][0][b].
+5. Held-Karp: dp = {}, prev = {}; dp[(1 << i, i)] = d(S, pts[i]); for mask in range(1, 1 << K): for i in mask with (mask, i) in dp: for j not in mask: relax dp[(mask | 1 << j, j)] with dp[(mask, i)] + d(pts[i], pts[j]) and set prev[(mask | 1 << j, j)] = i.
+6. full = (1 << K) - 1; last = min(range(K), key=lambda i: dp[(full, i)] + d(pts[i], G)). Rebuild exactly like this: order = [last]; m = full; while m != 1 << order[-1]: i = prev[(m, order[-1])]; m ^= 1 << order[-1]; order.append(i). Then order.reverse().
+7. stops = [S] + [pts[i] for i in order] + [G]; actions = "".join(path(runs[a][1], a, b) for a, b in zip(stops, stops[1:])).
+8. Collect rows, write csv with pandas.
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: MOVES = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}

@@ -1,0 +1,16 @@
+Write PART 1 of a Python script in ONE code block. No comments, no explanation. Only definitions and data loading, no training.
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: translate short lowercase English sentences to Vietnamese with nn.Transformer trained from scratch. DATA: data/train.csv: en,vi (12000). data/val.csv: en,vi (500). data/test.csv: id,en (1000). Words separated by spaces.
+
+CONTRACT (names shared by part 1 and part 2): train, val, test (DataFrames); sv, tv (dict word to id, with "<pad>" 0, "<unk>" 1, "<bos>" 2, "<eos>" 3); t_itos (list id to word for the target); enc_src(s), enc_tgt(s) (lists of ids, target wrapped in bos/eos); make_batches(srcs, tgts, bs, shuffle) (srcs, tgts = lists of id lists; returns a list of (idx, src, tgt): idx = list of original positions, src and tgt padded LongTensors on dev, tgt None when tgts is None); Model(len(sv), len(tv)) with forward(src, tgt_in) returning logits B x L x V; greedy(model, src, max_len=40) returning a list of word lists (written in part 2); bleu(hyps, refs) for lists of word lists (written in a separate chat, do not write it).
+
+WRITE:
+1. Read the three csv files. Vocabularies from train words; enc_src(s) = [sv.get(w, 1) for w in s.split()]; enc_tgt(s) = [2] + [tv.get(w, 1) for w in s.split()] + [3].
+2. make_batches: order positions by source length, chunk by bs, shuffle chunk order with random.shuffle if shuffle; pad with pad_sequence(batch_first=True, padding_value=0); move to dev.
+3. Model(nn.Module): src and tgt nn.Embedding(V, 256, padding_idx=0) multiplied by 16, plus learned positional nn.Embedding(64, 256) on torch.arange(L, device=dev); nn.Transformer(256, 4, 3, 3, 512, 0.1, batch_first=True); nn.Linear(256, V_tgt). forward passes src_key_padding_mask=src == 0, tgt_key_padding_mask=tgt_in == 0, memory_key_padding_mask=src == 0, tgt_mask=nn.Transformer.generate_square_subsequent_mask(tgt_in.size(1), device=dev).
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: train = pd.read_csv("data/train.csv")

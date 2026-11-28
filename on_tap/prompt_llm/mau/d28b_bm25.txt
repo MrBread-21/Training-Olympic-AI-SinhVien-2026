@@ -1,0 +1,18 @@
+Write ONE complete Python script in ONE code block. No comments, no explanation. Flat script, no main(). Only pandas, numpy, math, re, unicodedata, collections.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: for each Vietnamese question, rank company description passages with BM25 written by hand.
+
+DATA: data/b_corpus.csv: id,text (400 passages). data/b_questions.csv: id,question (300 questions, some typed without diacritics, the company name is never mentioned).
+
+OUTPUT: submission_b.csv with columns id,passage_ids where passage_ids = the 5 best passage ids separated by one space, best first.
+
+METRIC: Recall@1.
+
+STEPS:
+1. Call seed_all(42) at the top (random, numpy).
+2. norm(s): s = unicodedata.normalize("NFC", s).lower().replace("đ", "d"); then strip accents: "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn"); return re.findall(r"\w+", s).
+3. docs = [norm(t) for t in corpus.text]; N; avgdl; df = Counter of each word once per doc; idf[w] = math.log(1 + (N - df[w] + 0.5) / (df[w] + 0.5)); tfs = [Counter(d) for d in docs].
+4. k1 = 1.5, b = 0.75. score(q, i) = sum over unique words w of q found in tfs[i]: idf[w] * tf * (k1 + 1) / (tf + k1 * (1 - b + b * len(docs[i]) / avgdl)).
+5. For each question compute the scores for all passages as a numpy array, take np.argsort(-scores)[:5], join the corpus ids. Write the csv.

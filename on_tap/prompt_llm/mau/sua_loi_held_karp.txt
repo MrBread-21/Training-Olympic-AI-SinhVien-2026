@@ -1,0 +1,18 @@
+Fix this Python snippet. Reply with only the corrected snippet in one ```python block, same variable names, no explanation.
+
+ERROR: KeyError: (16, 4) on the line prev_i = prev[(current_mask, current_i)]
+
+MEANING: dp[(mask, i)] = cheapest cost from S that visits exactly the waypoints in mask and ends at waypoint i. prev[(mask, i)] = the waypoint visited just before i; it does not exist when mask has only bit i. best_i = last waypoint before G, full_mask = all bits. GOAL: path_order = list of waypoint positions waypoints[i] in visiting order, first to last, each exactly once.
+
+CODE:
+```python
+path_order = []
+current_mask = full_mask
+current_i = best_i
+while current_mask != 0:
+    prev_i = prev[(current_mask, current_i)]
+    path_order.insert(0, waypoints[prev_i])
+    current_mask ^= (1 << current_i)
+    current_i = prev_i
+path_order.append(waypoints[best_i])
+```

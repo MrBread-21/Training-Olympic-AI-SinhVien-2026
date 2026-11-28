@@ -1,0 +1,26 @@
+Write the REST of a Python script in ONE code block. No comments, no explanation. Flat script, no main().
+
+HEADER (already at the top of the file, do not repeat it): import json, re, unicodedata; numpy as np; scipy.sparse hstack; KFold, cross_val_predict; Ridge; TfidfVectorizer. seed_all(42) is already called. Start your code directly after the header.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: predict valence and arousal (1 to 9) of each given aspect in a Vietnamese review. No pretrained models.
+
+DATA:
+- data/a_train.jsonl: one JSON per line {"id", "text", "aspects": [{"aspect", "valence", "arousal"}]} (2500 lines).
+- data/a_test.jsonl: {"id", "text", "aspects": [{"term"}]} (800 lines). Text has teencode (ko, k, dc, đc) and mixed NFC/NFD.
+
+OUTPUT: pred_a.jsonl, one line per test line in the same order: {"id": the original id string of that line, "aspects": [{"aspect": term copied exactly, "valence": v, "arousal": a}]}, values clipped to [1, 9] and rounded to 2 decimals, json.dumps(..., ensure_ascii=False).
+
+METRIC: RMSE over (valence, arousal) pairs, lower is better.
+
+STEPS:
+1. clean(s): NFC, lower, then replace whole words with re.sub(r"\b(ko|k|khong)\b", "không", s) and re.sub(r"\b(dc|đc)\b", "được", s).
+2. clause(text, asp): t = clean(text); a = clean(asp); parts = re.split(r"[,.;!?]| nhưng | mà | còn | và ", t); c = first part containing a, else t; return c.replace(a, " ASP ").
+3. Build rows (clause, v, a) from train and rows (line number, term, clause) from test.
+4. X = hstack(TfidfVectorizer(ngram_range=(1, 3), sublinear_tf=True, min_df=1).fit_transform, TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), sublinear_tf=True, min_df=2).fit_transform), fitted on train clauses only.
+5. Two Ridge(alpha=0.1) models, one for valence and one for arousal. Print 5-fold KFold(shuffle=True, random_state=42) cross_val_predict RMSE_VA = sqrt(mean((pv - v)^2 + (pa - a)^2)).
+6. Fit on all train, predict test, np.clip to [1, 9], round 2. Write exactly like this: k = 0; for line in test_lines: asp = []; for t in line["aspects"]: asp.append({"aspect": t["term"], "valence": float(pv[k]), "arousal": float(pa[k])}); k += 1; then write json.dumps({"id": line["id"], "aspects": asp}, ensure_ascii=False) + "
+" to pred_a.jsonl opened with encoding="utf-8".
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: train_lines = [json.loads(l) for l in open("data/a_train.jsonl", encoding="utf-8")]

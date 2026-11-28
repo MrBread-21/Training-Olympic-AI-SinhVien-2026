@@ -1,0 +1,20 @@
+Write PART 1 of a Python script in ONE code block. No comments, no explanation. Only definitions and data loading, no training.
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: keyword spotting on 1-second 16 kHz speech clips, 9 classes. Train clips are clean; test clips are noisy and from unseen speakers. No pretrained models, no torchaudio.
+
+DATA: data/train.csv: id,label,speaker (1800 rows), audio f"data/train/{id}.wav". data/test.csv: id (900 rows), audio f"data/test/{id}.wav". WAV int16 mono.
+
+CONTRACT (names shared by part 1 and part 2): classes (sorted label list); train, test (DataFrames); wav_tr, wav_te (float tensors N x 16000 on dev); y_tr (torch.long on dev); spk (numpy array of speakers); add_noise(w, snr_db) (w: B x 16000, snr_db: tensor of size B); augment(w); logmel(w) returns B x 1 x 64 x T; spec_aug(m); Net (nn.Module, output 9 logits, written in part 2).
+
+WRITE:
+1. load(path): wavfile.read, float32 / 32768, pad with zeros or cut to 16000. Build wav_tr, wav_te, y_tr, spk, classes.
+2. add_noise(w, snr_db): half of the rows get torch.randn noise, the other half get the sum of 3 random rows of wav_tr; scale noise so that 10 * log10(P_signal / P_noise) = snr_db (powers = mean of squares per row, add 1e-8); return w + noise.
+3. augment(w): torch.roll by a random shift in [-1600, 1600]; multiply by a random gain in [0.6, 1.4] per row; add_noise with snr uniform in [0, 20].
+4. logmel(w): window = torch.hann_window(400, device=dev); spec = torch.stft(w, n_fft=512, hop_length=160, win_length=400, window=window, return_complex=True).abs() ** 2; fb = triangular mel filterbank 64 x 257 between 0 and 8000 Hz with mel(f) = 2595 * log10(1 + f / 700), built once as a tensor on dev; return torch.log(torch.matmul(fb, spec) + 1e-6).unsqueeze(1).
+5. spec_aug(m): per example zero one random band of up to 8 mel bins and one random band of up to 20 frames (clone first).
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: train = pd.read_csv("data/train.csv")
