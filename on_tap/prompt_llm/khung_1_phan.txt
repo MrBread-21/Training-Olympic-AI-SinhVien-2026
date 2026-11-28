@@ -1,0 +1,26 @@
+Write the REST of a Python script in ONE code block. No comments, no explanation. Flat script, no main().
+
+HEADER (already at the top of the file, do not repeat it): import torch, os, random, json, math, re, time, unicodedata, heapq; Counter, defaultdict; numpy as np; pandas as pd; torch.nn as nn; torch.nn.functional as F; torchvision; PIL Image; scipy.io wavfile; scipy.sparse hstack; DataLoader, Dataset, TensorDataset; pad_sequence; train_test_split, KFold, StratifiedKFold, StratifiedGroupKFold, GroupShuffleSplit, cross_val_predict; make_pipeline; StandardScaler; LogisticRegression, Ridge; KNeighborsClassifier; TfidfVectorizer; f1_score, roc_auc_score, confusion_matrix. seed_all(42) is already called. dev = "cuda" or "cpu". amp() returns the bf16 autocast context (disabled when not supported): use "with amp():" around every forward pass. Import anything else you need. Start your code directly after the header: no imports that the header already has, no seed_all, no dev, no amp.
+
+STYLE: dense code, no # comments, no blank lines, no docstrings, no type hints, no prints except the ones asked.
+
+TASK: <đầu vào> to <đầu ra>, <số lớp / loại bài>. <được dùng pretrained gì>. Must run in under <N> minutes.
+
+DATA:
+- <đường dẫn>: <cột>, <số dòng>, <một mẫu là gì>. Image/audio path f"<thư mục>/{id}.<đuôi>".
+- <đường dẫn tập test>: <cột>, <số dòng>.
+- <điều đặc biệt: NFC/NFD, nhóm trùng lặp, nhãn nhiễu, test bị làm hỏng...>.
+
+OUTPUT: <tên file> with columns <cột 1>,<cột 2> (<định dạng: tên lớp chứ không phải số, xác suất, chuỗi cách nhau dấu cách...>), one row per id of <file id>, in the order of <file>.
+
+METRIC: <metric>, so <hệ quả: xuất xác suất / giữ chữ hoa / làm tròn 2 chữ số...>.
+
+STEPS:
+1. <đọc dữ liệu: câu lệnh cụ thể, kiểu và kích thước kết quả>
+2. <chia train/val: hàm, tham số, random_state=42>
+3. <mô hình: tên lớp, từng tầng, tham số>
+4. <tạo MỘT lần trước vòng epoch: optimizer, scheduler, loss với số cụ thể>
+5. <vòng epoch: train; sau vòng batch tính val, in, lưu best>
+6. <nạp best, dự đoán trong model.eval() + torch.inference_mode(), ĐỔI SANG ĐỊNH DẠNG NỘP bằng câu lệnh cụ thể, ghi theo id, assert>
+
+ANSWER: only one ```python code block, nothing before or after it. Its first line must be: <dòng code đầu tiên, ví dụ train = pd.read_csv("data/train.csv")>
